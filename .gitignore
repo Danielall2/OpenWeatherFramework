@@ -34,3 +34,6 @@ out/
 *.ipr
 *.iws
 *.txt
+
+# Sensitive
+apikey.properties
