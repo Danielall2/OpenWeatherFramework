@@ -10,7 +10,7 @@ import java.util.regex.Pattern;
 /**
  * This class is creating the URLs needed to create a call on WeatherAPI.
  * @author Samurah
- * @version 1.1
+ * @version 1.2
  * @since 1.0
  */
 public class URLBuilder {
@@ -78,15 +78,19 @@ public class URLBuilder {
      * @return URLBuilder instance
      */
     private static URLBuilder decode(String url, String apikey) {
-        Pattern pattern = Pattern.compile("^(?<baseurl>(?<scheme>https?://)?(?<hostname>[\\w.-]+))(?<path>/[\\w+/.]+)?(\\?(?<query>[^#]+)(#.*)?)?$");
-        Matcher matcher = pattern.matcher(url);
-        if (apikey.isBlank()) {
-            throw new IllegalArgumentException("Missing API key");
-        }
-        if (matcher.matches()) {
-            return new URLBuilder(matcher.group("baseurl"), matcher.group("path"), matcher.group("query"), apikey);
-        } else {
-            throw new IllegalArgumentException("Bad URL format.");
+        if(url!=null && apikey != null) {
+            Pattern pattern = Pattern.compile("^(?<baseurl>(?<scheme>https?://)?(?<hostname>[\\w.-]+))(?<path>/[\\w+/.]+)?(\\?(?<query>[^#]+)(#.*)?)?$");
+            Matcher matcher = pattern.matcher(url);
+            if (apikey.isBlank()) {
+                throw new IllegalArgumentException("Missing API key");
+            }
+            if (matcher.matches()) {
+                return new URLBuilder(matcher.group("baseurl"), matcher.group("path"), matcher.group("query"), apikey);
+            } else {
+                throw new IllegalArgumentException("Bad URL format.");
+            }
+        }else{
+            throw new IllegalArgumentException("Null values not allowed!");
         }
     }
 
