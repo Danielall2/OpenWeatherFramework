@@ -6,7 +6,9 @@ public enum Main {
     MIN_TEMPERATURE("temp_min"),
     MAX_TEMPERATURE("temp_max"),
     PRESSURE("pressure"),
-    HUMIDITY("humidity");
+    HUMIDITY("humidity"),
+    PRESSURE_SEA_LEVEL("sea_level"),
+    PRESSURE_GROUND_LEVEL("grnd_level");
 
     private String field;
 
