@@ -3,6 +3,7 @@ package com.spartaglobal.eng76.framework.weatherapi;
 import com.spartaglobal.eng76.framework.dto.Enums.Main;
 import com.spartaglobal.eng76.framework.dto.WeatherDTO;
 import com.spartaglobal.eng76.framework.injector.Injector;
+import com.spartaglobal.eng76.framework.urlbuilder.URLBuilder;
 
 import java.io.FileReader;
 import java.io.IOException;
@@ -19,9 +20,11 @@ public class WeatherAPI {
             e.printStackTrace();
         }
 
-        System.out.println("url : " + properties.getProperty("url"));
+        System.out.println("apikey : " + properties.getProperty("apikey"));
 
-        WeatherDTO weatherDTO = injector.injectIntoWeatherDTO(properties.getProperty("url"));
+        String url = URLBuilder.ofCity("London", properties.getProperty("apikey")).toString();
+
+        WeatherDTO weatherDTO = injector.injectIntoWeatherDTO(url);
 
         System.out.println(weatherDTO.getBase());
 
