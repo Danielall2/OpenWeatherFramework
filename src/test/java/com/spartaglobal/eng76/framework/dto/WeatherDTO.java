@@ -4,6 +4,12 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.time.LocalDate;
+import java.time.ZoneId;
+import java.time.format.DateTimeFormatter;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 
@@ -73,6 +79,8 @@ public class WeatherDTO extends ParentDTO {
     @JsonProperty("cod")
     private String cod;
 
+    private Date localDate;
+
     public WeatherDTO() {
 
     }
@@ -138,4 +146,11 @@ public class WeatherDTO extends ParentDTO {
     public String getCod() {
         return cod;
     }
+
+    public LocalDate getLocalDate() {
+        localDate = new Date((long)Integer.parseInt(getDt())*1000);
+        LocalDate date = localDate.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
+        return date;
+    }
+
 }
