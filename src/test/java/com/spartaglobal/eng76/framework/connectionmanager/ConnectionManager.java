@@ -20,8 +20,6 @@ public class ConnectionManager {
     }
 
     public void connectToAPI(String url) {
-        System.out.println(url);
-
         try {
             httpClient = HttpClient.newHttpClient();
             httpRequest = HttpRequest.newBuilder().uri(URI.create(url)).build();
