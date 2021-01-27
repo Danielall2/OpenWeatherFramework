@@ -8,7 +8,7 @@
   <artifactId>OpenWeatherFramework</artifactId>
   <version>1.0-SNAPSHOT</version>
 
-  <name>WeatherAPI-Framework</name>
+  <name>OpenWeatherFramework</name>
   <url>http://www.example.com</url>
 
   <properties>
