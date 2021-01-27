@@ -1,4 +1,4 @@
-package com.spartaglobal.eng76.framework;
+package com.spartaglobal.eng76.frameworktests;
 
 import com.spartaglobal.eng76.framework.connectionmanager.ConnectionManager;
 import org.junit.jupiter.api.BeforeAll;
