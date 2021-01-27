@@ -1,5 +1,6 @@
 package com.spartaglobal.eng76.framework.urlbuilder;
 
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Map;
@@ -9,20 +10,30 @@ import java.util.regex.Pattern;
 /**
  * This class is creating the URLs needed to create a call on WeatherAPI.
  * @author Samurah
- * @version 1.0
+ * @version 1.1
+ * @since 1.0
  */
 public class URLBuilder {
+    /**
+     * This is the base url used to create specific calls in {@code ofCity} methods.
+     */
     private static final String BASE_URL = "https://api.openweathermap.org/data/2.5/";
 
     private String baseUrl;
     private String path;
     private String query;
     private String apikey;
-    private boolean searchSelected;
 
     private URLBuilder() {
     }
 
+    /**
+     * Internal use of constructor.
+     * @param baseUrl - url containing scheme and hostname
+     * @param path - path
+     * @param query - query parameters
+     * @param apikey - the api key used to access the data
+     */
     private URLBuilder(String baseUrl, String path, String query, String apikey) {
         this.baseUrl = baseUrl;
         if (path.charAt(path.length() - 1) == '/') {
@@ -33,11 +44,40 @@ public class URLBuilder {
         this.apikey = apikey;
     }
 
+    /**
+     * Adds a parameter in {@code query};
+     * @param key String value
+     * @param value String value
+     * @return the same instance of URLBuilder, with the extra parameter added
+     */
+    public URLBuilder addParam(String key, String value){
+        Collection<Map.Entry<String, String>> params = splitParam(query);
+        params.add(Map.entry(key, value));
+        this.query = paramsNoAPIKey(params);
+        return this;
+    }
+
+    /**
+     * Adds a parameter in query
+     * @param key String
+     * @param value String
+     * @return the same instance of URLBuilder, with the extra parameter added.
+     */
+    public URLBuilder addParam(OptionalParam key, String value){
+        return addParam(key.toString(), value);
+    }
+
     public static URLBuilder create(String url, String apikey) {
         return decode(url, apikey);
     }
 
-    public static URLBuilder decode(String url, String apikey) {
+    /**
+     * Decodes the url and creates a new URLBuilder object having the apikey provided.
+     * @param url String
+     * @param apikey String
+     * @return URLBuilder instance
+     */
+    private static URLBuilder decode(String url, String apikey) {
         Pattern pattern = Pattern.compile("^(?<baseurl>(?<scheme>https?://)?(?<hostname>[\\w.-]+))(?<path>/[\\w+/.]+)?(\\?(?<query>[^#]+)(#.*)?)?$");
         Matcher matcher = pattern.matcher(url);
         if (apikey.isBlank()) {
@@ -50,6 +90,11 @@ public class URLBuilder {
         }
     }
 
+    /**
+     * Generates a string that is excluding API key if contained.
+     * @param params Collection of {@code Map.Entry<String, String>}
+     * @return String
+     */
     private static String paramsNoAPIKey(Collection<Map.Entry<String, String>> params) {
         if (params != null) {
             StringBuilder query = new StringBuilder();
@@ -66,6 +111,11 @@ public class URLBuilder {
         return null;
     }
 
+    /**
+     * Generates a Collection of parameters from {@code query} provided.
+     * @param query String
+     * @return {@code Collection<Map.Entry<String,String>>}
+     */
     private static Collection<Map.Entry<String, String>> splitParam(String query) {
         if (query != null) {
             ArrayList<Map.Entry<String, String>> list = new ArrayList<>();
@@ -123,6 +173,7 @@ public class URLBuilder {
     public static URLBuilder ofZipCode(String zipCode, String countryCode, String apikey) {
         return create(BASE_URL + "weather?" + "zip=" + zipCode + "," + countryCode, apikey);
     }
+
 
     @Override
     public String toString() {
