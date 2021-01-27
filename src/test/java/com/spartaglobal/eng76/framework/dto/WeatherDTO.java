@@ -77,6 +77,8 @@ public class WeatherDTO extends ParentDTO {
 
     }
 
+
+
     public HashMap<String, String> getCoord() {
         return coord;
     }
@@ -91,6 +93,10 @@ public class WeatherDTO extends ParentDTO {
 
     public HashMap<String, String> getMain() {
         return main;
+    }
+
+    public String getVisibility() {
+        return visibility;
     }
 
     public HashMap<String, String> getWind() {
