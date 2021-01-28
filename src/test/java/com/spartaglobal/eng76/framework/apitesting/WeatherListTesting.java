@@ -1,5 +1,6 @@
 package com.spartaglobal.eng76.framework.apitesting;
 
+import com.spartaglobal.eng76.framework.exceptions.FailedHttpConnectionException;
 import com.spartaglobal.eng76.framework.weatherapi.WeatherAPI;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeAll;
@@ -220,7 +221,7 @@ public class WeatherListTesting {
                 "johannesburg",
                 "brasilia"})
     @DisplayName("Does the current city have at least one weather condition?")
-    void isWeatherArrayEmpty(String city) {
+    void isWeatherArrayEmpty(String city) throws FailedHttpConnectionException {
         List<HashMap<String, String>> currentWeather = WeatherAPI.ofCity(city, properties.getProperty("apikey")).getWeather();
         System.out.println(city + " currently has " + currentWeather.size() + " weather condition(s)");
         Assertions.assertTrue(currentWeather.size() > 0);
@@ -233,7 +234,7 @@ public class WeatherListTesting {
                 "johannesburg",
                 "brasilia"})
     @DisplayName("Does the current weather condition(s) have a valid ID?")
-    void isResponseWeatherIDValid(String city)  {
+    void isResponseWeatherIDValid(String city) throws FailedHttpConnectionException {
         for(HashMap<String, String> currentWeather:WeatherAPI.ofCity(city, properties.getProperty("apikey")).getWeather()) {
             System.out.println("Current weather ID ::" + currentWeather.get("id"));
             Assertions.assertTrue(weatherConditions.containsKey(currentWeather.get("id")));
@@ -247,7 +248,7 @@ public class WeatherListTesting {
                 "johannesburg",
                 "brasilia"})
     @DisplayName("Does the current weather condition(s) have a valid Main category?")
-    void isResponseWeatherMainValid(String city) {
+    void isResponseWeatherMainValid(String city) throws FailedHttpConnectionException {
         for(HashMap<String, String> currentWeather:WeatherAPI.ofCity(city, properties.getProperty("apikey")).getWeather()) {
             System.out.println("Current weather ID ::" + currentWeather.get("id"));
             System.out.println("Current weather Main category ::" + currentWeather.get("main"));
@@ -262,7 +263,7 @@ public class WeatherListTesting {
                 "johannesburg",
                 "brasilia"})
     @DisplayName("Does the current weather condition(s) have a valid Description?")
-    void isResponseWeatherDescriptionValid(String city) {
+    void isResponseWeatherDescriptionValid(String city) throws FailedHttpConnectionException {
         for(HashMap<String, String> currentWeather:WeatherAPI.ofCity(city, properties.getProperty("apikey")).getWeather()) {
             System.out.println("Current weather ID ::" + currentWeather.get("id"));
             System.out.println("Current weather Description ::" + currentWeather.get("description"));
@@ -277,7 +278,7 @@ public class WeatherListTesting {
                 "johannesburg",
                 "brasilia"})
     @DisplayName("Does the current weather condition(s) have a valid Icon ID?")
-    void isResponseWeatherIconValid(String city) {
+    void isResponseWeatherIconValid(String city) throws FailedHttpConnectionException {
         for(HashMap<String, String> currentWeather:WeatherAPI.ofCity(city, properties.getProperty("apikey")).getWeather()) {
             if(currentWeather.get("main").equals("Clear") || currentWeather.get("main").equals("Clouds")) {
                 System.out.println("Current weather ID ::" + currentWeather.get("id"));
