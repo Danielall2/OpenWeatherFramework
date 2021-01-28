@@ -1,16 +1,18 @@
 package com.spartaglobal.eng76.framework.dto;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.spartaglobal.eng76.framework.connectionmanager.ConnectionManager;
 
-import java.net.http.HttpResponse;
 import java.util.List;
 
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
+        "message",
         "cod",
+        "count",
         "calctime",
         "cnt",
         "list",
@@ -18,8 +20,14 @@ import java.util.List;
 
 public class WeatherListDTO {
 
-    @JsonProperty("coord")
-    private String coord;
+    @JsonProperty("message")
+    private String message;
+
+    @JsonProperty("cod")
+    private String cod;
+
+    @JsonProperty("count")
+    private String count;
 
     @JsonProperty("calctime")
     private String calctime;
@@ -30,14 +38,15 @@ public class WeatherListDTO {
     @JsonProperty("list")
     private List<WeatherDTO> list;
 
+    @JsonIgnore
     private ConnectionManager connectionManager;
 
     public WeatherListDTO() {
 
     }
 
-    public String getCoord() {
-        return coord;
+    public String getCod() {
+        return cod;
     }
 
     public String getCalctime() {
@@ -45,7 +54,7 @@ public class WeatherListDTO {
     }
 
     public String getCount() {
-        return cnt;
+        return count;
     }
 
     public List<WeatherDTO> getList() {
@@ -60,8 +69,12 @@ public class WeatherListDTO {
         this.connectionManager = connectionManager;
     }
 
-    // Need a method to convert inject the list of JSON objects into a list of WeatherDTOs
+    public String getMessage() {
+        return message;
+    }
 
-
+    public String getCnt() {
+        return cnt;
+    }
 }
 
