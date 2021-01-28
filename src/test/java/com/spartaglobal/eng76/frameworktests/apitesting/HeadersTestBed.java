@@ -1,4 +1,4 @@
-package com.spartaglobal.eng76.frameworktests.apitesting;
+package com.spartaglobal.eng76.framework.apitesting;
 
 import com.spartaglobal.eng76.framework.connectionmanager.ConnectionManager;
 import com.spartaglobal.eng76.framework.urlbuilder.URLBuilder;
