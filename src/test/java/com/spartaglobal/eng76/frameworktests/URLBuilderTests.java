@@ -70,11 +70,13 @@ public class URLBuilderTests {
         Exception exception = Assertions.assertThrows(IllegalArgumentException.class, () -> {URLBuilder.ofCity(null, WeatherAPI.getAPIKey());});
 
         String actual = exception.getMessage();
-        String expected = "Null values not allowed!";
+        String expected = "cityName cannot be null or empty!";
 
         Assertions.assertEquals(actual, expected);
 
     }
+
+
 
     @Test
     @DisplayName("Checking first ofCity method returns correct String")
@@ -102,6 +104,33 @@ public class URLBuilderTests {
 
 
     @Test
+    @DisplayName("Check second ofCity can handle null")
+    void checkOfCityTwoCanHandleNull(){
+
+        Exception exception = Assertions.assertThrows(IllegalArgumentException.class, () -> {URLBuilder.ofCity(null, "4",WeatherAPI.getAPIKey());});
+
+        String actual = exception.getMessage();
+        String expected = "cityName cannot be null or empty!";
+
+        Assertions.assertEquals(actual, expected);
+    }
+
+    @Test
+    @DisplayName("Check second ofCity can handle empty")
+    void checkOfCityTwoCanHandleEmpty(){
+
+        Exception exception = Assertions.assertThrows(IllegalArgumentException.class, () -> {URLBuilder.ofCity("London", "",WeatherAPI.getAPIKey());});
+
+        String actual = exception.getMessage();
+        String expected = "stateCode cannot be null or empty!";
+
+        Assertions.assertEquals(actual, expected);
+    }
+
+
+
+
+    @Test
     @DisplayName("Check third ofCity method returns correct String")
     void checkOfCityThree(){
         String expected = "https://api.openweathermap.org/data/2.5/weather?q=London,3,10&appid=" + WeatherAPI.getAPIKey();
@@ -112,13 +141,63 @@ public class URLBuilderTests {
     }
 
     @Test
+    @DisplayName("Check third ofCity can handle nulls")
+    void checkOfCityThreeCanHandleNull(){
+        Exception exception = Assertions.assertThrows(IllegalArgumentException.class, () -> {URLBuilder.ofCity(null, "1","2",WeatherAPI.getAPIKey());});
+
+        String actual = exception.getMessage();
+        String expected = "cityName cannot be null or empty!";
+
+        Assertions.assertEquals(actual, expected);
+    }
+
+
+    @Test
+    @DisplayName("Check third ofCity can handle empty")
+    void checkOfCityThreeCanHandleEmpty(){
+        Exception exception = Assertions.assertThrows(IllegalArgumentException.class, () -> {URLBuilder.ofCity("Birmingham", "","2",WeatherAPI.getAPIKey());});
+
+        String actual = exception.getMessage();
+        String expected = "stateCode cannot be null or empty!";
+
+        Assertions.assertEquals(actual, expected);
+    }
+
+
+
+    @Test
+    @DisplayName("Check third ofCity can handle empty country code")
+    void checkOfCityThreeCanHandleEmptyCountryCode(){
+        Exception exception = Assertions.assertThrows(IllegalArgumentException.class, () -> {URLBuilder.ofCity("Birmingham", "1","",WeatherAPI.getAPIKey());});
+
+        String actual = exception.getMessage();
+        String expected = "countryCode cannot be null or empty!";
+
+        Assertions.assertEquals(actual, expected);
+    }
+
+
+
+    @Test
     @DisplayName("Check fourth ofCity method returns correct String")
     void checkOfCityFour(){
-        String expected = "https://api.openweathermap.org/data/2.5/weather?q=5405&appid=" + WeatherAPI.getAPIKey();
-        String actual = URLBuilder.ofCity("5405", WeatherAPI.getAPIKey()).toString();
+        String expected = "https://api.openweathermap.org/data/2.5/weather?id=5405&appid=" + WeatherAPI.getAPIKey();
+        String actual = URLBuilder.ofCity(5405, WeatherAPI.getAPIKey()).toString();
 
 
         Assertions.assertEquals(expected,actual);
+    }
+
+
+    @Test
+    @DisplayName("Check fourth ofCity can handle -1")
+    void checkOfCityFourCanHandleWrongInput(){
+        Exception exception = Assertions.assertThrows(IllegalArgumentException.class, () -> {URLBuilder.ofCity(-1,WeatherAPI.getAPIKey());});
+
+        String actual = exception.getMessage();
+        String expected = "cityId cannot be < 0!";
+
+        Assertions.assertEquals(actual, expected);
     }
 
 
@@ -134,6 +213,31 @@ public class URLBuilderTests {
 
         Assertions.assertEquals(expected,actual);
 
+    }
+
+
+    @Test
+    @DisplayName("Check fourth ofCities can handle null")
+    void checkOfCitiesCanHandleNull(){
+        Exception exception = Assertions.assertThrows(IllegalArgumentException.class, () -> {URLBuilder.ofCities(null,WeatherAPI.getAPIKey());});
+
+        String actual = exception.getMessage();
+        String expected = "citiesId length should not be null";
+
+        Assertions.assertEquals(actual, expected);
+    }
+
+
+    @Test
+    @DisplayName("Check fourth ofCities can handle 0 length array")
+    void checkOfCitiesCanHandleWrongInput(){
+        int[] id = new int[]{};
+        Exception exception = Assertions.assertThrows(IllegalArgumentException.class, () -> {URLBuilder.ofCities(id,WeatherAPI.getAPIKey());});
+
+        String actual = exception.getMessage();
+        String expected = "citiesId length should be > 0";
+
+        Assertions.assertEquals(actual, expected);
     }
 
 
@@ -170,6 +274,18 @@ public class URLBuilderTests {
         Assertions.assertEquals(expected,actual);
     }
 
+
+    @Test
+    @DisplayName("Check ofZipCode can handle null")
+    void checkOfZipCodeNull(){
+        Exception exception = Assertions.assertThrows(IllegalArgumentException.class, () -> {URLBuilder.ofZipCode(null,WeatherAPI.getAPIKey());});
+
+        String actual = exception.getMessage();
+        String expected = "zipCode should not be null or empty!";
+
+        Assertions.assertEquals(actual, expected);
+    }
+
     @Test
     @DisplayName("Check second ofZipCode returns correct String")
     void checkOfZipCodeTwo(){
@@ -178,6 +294,30 @@ public class URLBuilderTests {
 
 
         Assertions.assertEquals(expected,actual);
+    }
+
+
+    @Test
+    @DisplayName("Check second ofZipCode can handle a empty input")
+    void checkOfZipCodeTwoCanHandleEmpty(){
+        Exception exception = Assertions.assertThrows(IllegalArgumentException.class, () -> {URLBuilder.ofZipCode("","4",WeatherAPI.getAPIKey());});
+
+        String actual = exception.getMessage();
+        String expected = "zipCode should not be null or empty!";
+
+        Assertions.assertEquals(actual, expected);
+    }
+
+
+    @Test
+    @DisplayName("Check second ofZipCode can handle a null input")
+    void checkOfZipCodeTwoCanHandleNull(){
+        Exception exception = Assertions.assertThrows(IllegalArgumentException.class, () -> {URLBuilder.ofZipCode("3",null,WeatherAPI.getAPIKey());});
+
+        String actual = exception.getMessage();
+        String expected = "countryCode should not be null or empty!";
+
+        Assertions.assertEquals(actual, expected);
     }
 
 }
