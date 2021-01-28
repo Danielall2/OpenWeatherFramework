@@ -3,7 +3,6 @@ package com.spartaglobal.eng76.framework.apitesting;
 import com.spartaglobal.eng76.framework.connectionmanager.ConnectionManager;
 import com.spartaglobal.eng76.framework.urlbuilder.URLBuilder;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -12,66 +11,65 @@ import org.junit.jupiter.params.provider.ValueSource;
 import java.io.FileReader;
 import java.io.IOException;
 import java.net.http.HttpHeaders;
-import java.time.LocalDate;
 import java.util.Properties;
 
 public class HeadersTestBed {
 
     HttpHeaders httpHeaders = null;
-    String BaseURL = null;
+    Properties properties = new Properties();
 
     /*
      * testing not complete
      */
 
-    @BeforeAll
-    public void initially(){
-        Properties properties = new Properties();
+    @BeforeEach
+    public void setup(){
         try {
             properties.load(new FileReader("src/test/resources/apikey.properties"));
-            BaseURL = URLBuilder.ofCity("London", properties.getProperty("apikey")).toString();
         } catch (IOException e) {
             e.printStackTrace();
         }
-        ConnectionManager connectionManager = new ConnectionManager();
-        connectionManager.connectToAPI(BaseURL);
-        //httpHeaders = connectionManager.getHttpHeaders;
-
-    }
-
-    @BeforeEach
-    public void setup(){
-
     }
 
 
     @ParameterizedTest
     @ValueSource(strings = {"London", "paris"})//contains random urls to return headers
-    public void CheckHeadersAreReturnedFromRequests(String url){
+    public void CheckHeadersAreReturnedFromRequests(String location){
+        httpHeaders = sortOutConnection(location);
         Assertions.assertEquals(9,httpHeaders.map().size());
     }
 
     @ParameterizedTest
-    @ValueSource()
+    @ValueSource(strings = {"London", "paris"})
     public void checkConnectionsHeaderReturnsKeepAlive(String location){
-        Assertions.assertEquals("keep-alive",httpHeaders.map().get("Connection"));
+        httpHeaders = sortOutConnection(location);
+        Assertions.assertTrue(httpHeaders.map().get("Connection").toString().contains("keep-alive"));
     }
 
     @ParameterizedTest
-    @ValueSource()
-    public void checkConnectionIsJson(String URL){
-        Assertions.assertTrue(httpHeaders.map().get("Content-Type").contains("json"));
+    @ValueSource(strings = {"London", "paris"})
+    public void checkConnectionIsJson(String location){
+        httpHeaders = sortOutConnection(location);
+        Assertions.assertTrue(httpHeaders.map().get("Content-Type").toString().contains("json"));
     }
 
     @ParameterizedTest
-    @ValueSource()
-    public void checkServer(String URL){
-        Assertions.assertEquals("openresty",httpHeaders.map().get("Server"));
+    @ValueSource(strings = {"London", "paris"})
+    public void checkServer(String location){
+        httpHeaders = sortOutConnection(location);
+        Assertions.assertTrue(httpHeaders.map().get("Server").toString().contains("openresty"));
     }
 
     @Test
     public void checkDate(){
         //Assertions.assertTrue(httpHeaders.map().get("Date") == LocalDate.now().toString());
+        //Assertions.assertTrue(httpHeaders.map().get("Date").toString().contains(LocalDate.now().format().toString()));
     }
 
+    private HttpHeaders sortOutConnection(String location){
+        String url = URLBuilder.ofCity(location, properties.getProperty("apikey")).toString();
+        ConnectionManager connectionManager = new ConnectionManager();
+        connectionManager.connectToAPI(url);
+        return connectionManager.getHttpHeaders();
+    }
 }
