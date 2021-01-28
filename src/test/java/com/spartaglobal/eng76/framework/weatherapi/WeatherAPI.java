@@ -115,4 +115,15 @@ public class WeatherAPI {
         return Injector.injectIntoWeatherDTO(connectionManager);
     }
 
+    public static String getAPIKey() {
+        Properties properties = new Properties();
+        try {
+            properties.load(new FileReader("src/test/resources/apikey.properties"));
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        return properties.getProperty("apikey").toString();
+    }
+
 }

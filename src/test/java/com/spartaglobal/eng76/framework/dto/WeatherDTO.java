@@ -6,6 +6,10 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.spartaglobal.eng76.framework.connectionmanager.ConnectionManager;
 
 import java.net.http.HttpResponse;
+import java.time.Instant;
+import java.time.LocalDate;
+import java.time.ZoneId;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 
@@ -150,5 +154,14 @@ public class WeatherDTO extends ParentDTO {
     public ConnectionManager getConnectionManager() {
         return connectionManager;
     }
+
+    private Date localDate;
+
+    public LocalDate getLocalDate() {
+        localDate = new Date(Long.parseLong(getDt())*1000);
+        LocalDate date = localDate.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
+        return date;
+    }
+
 }
 

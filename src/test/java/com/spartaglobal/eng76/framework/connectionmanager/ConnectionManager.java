@@ -19,16 +19,18 @@ public class ConnectionManager {
     public ConnectionManager() {
     }
 
-    public void connectToAPI(String url) {
+    public boolean connectToAPI(String url) {
         try {
             httpClient = HttpClient.newHttpClient();
             httpRequest = HttpRequest.newBuilder().uri(URI.create(url)).build();
             httpResponse = httpClient.send(httpRequest, HttpResponse.BodyHandlers.ofString());
             httpHeaders = httpResponse.headers();
             headersMap = httpHeaders.map();
-        } catch (InterruptedException | IOException e) {
-            e.printStackTrace();
+        } catch (InterruptedException | IOException ignored) {
+            return false;
         }
+
+        return true;
     }
 
     public int getStatusCode() {
