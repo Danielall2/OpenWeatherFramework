@@ -5,6 +5,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.spartaglobal.eng76.framework.connectionmanager.ConnectionManager;
 import com.spartaglobal.eng76.framework.dto.WeatherDTO;
 import com.spartaglobal.eng76.framework.dto.WeatherListDTO;
+import com.spartaglobal.eng76.framework.exceptions.FailedHttpConnectionException;
 
 import java.net.http.HttpResponse;
 
@@ -12,26 +13,30 @@ public class Injector {
 
     private static final ObjectMapper objectMapper = new ObjectMapper();
 
-    public static WeatherDTO injectIntoWeatherDTO(ConnectionManager connectionManager) {
+    public static WeatherDTO injectIntoWeatherDTO(ConnectionManager connectionManager) throws FailedHttpConnectionException {
+        if(connectionManager == null){
+            throw new IllegalArgumentException("Connection manager should not be null!");
+        }
         try {
             WeatherDTO weatherDTO = objectMapper.readValue(connectionManager.getHttpResponse().body(), WeatherDTO.class);
             weatherDTO.setConnectionManager(connectionManager);
             return weatherDTO;
         } catch (JsonProcessingException e) {
-            e.printStackTrace();
+            throw new FailedHttpConnectionException(connectionManager);
         }
-        return null;
     }
 
-    public static WeatherListDTO injectIntoWeatherListDTO(ConnectionManager connectionManager) {
+    public static WeatherListDTO injectIntoWeatherListDTO(ConnectionManager connectionManager) throws FailedHttpConnectionException {
+        if(connectionManager == null){
+            throw new IllegalArgumentException("Connection manager should not be null!");
+        }
         try {
             WeatherListDTO weatherListDTO = objectMapper.readValue(connectionManager.getHttpResponse().body(), WeatherListDTO.class);
             weatherListDTO.setConnectionManager(connectionManager);
             return weatherListDTO;
         } catch (JsonProcessingException e) {
-            e.printStackTrace();
+            throw new FailedHttpConnectionException(connectionManager);
         }
-        return null;
     }
 
 //    public ParentDTO injectIntoGenericDTO(String url) {

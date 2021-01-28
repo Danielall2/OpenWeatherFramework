@@ -1,5 +1,6 @@
 package com.spartaglobal.eng76.framework.dto;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
@@ -32,7 +33,7 @@ import java.util.List;
         "cod"
 })
 
-public class WeatherDTO extends ParentDTO {
+public class WeatherDTO {
 
     @JsonProperty("coord")
     private HashMap<String, String> coord;
@@ -79,6 +80,7 @@ public class WeatherDTO extends ParentDTO {
     @JsonProperty("cod")
     private String cod;
 
+    @JsonIgnore
     private ConnectionManager connectionManager;
 
     public WeatherDTO() {
@@ -159,8 +161,7 @@ public class WeatherDTO extends ParentDTO {
 
     public LocalDate getLocalDate() {
         localDate = new Date(Long.parseLong(getDt())*1000);
-        LocalDate date = localDate.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
-        return date;
+        return localDate.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
     }
 
 }
