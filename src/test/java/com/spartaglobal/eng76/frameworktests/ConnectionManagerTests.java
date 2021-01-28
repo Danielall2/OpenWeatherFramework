@@ -1,6 +1,7 @@
 package com.spartaglobal.eng76.frameworktests;
 
 import com.spartaglobal.eng76.framework.connectionmanager.ConnectionManager;
+
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
