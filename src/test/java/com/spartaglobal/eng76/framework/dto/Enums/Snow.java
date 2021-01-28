@@ -1,13 +1,13 @@
 package com.spartaglobal.eng76.framework.dto.Enums;
 
-public enum Clouds {
-    ALL("all"),
-    TODAY("today");
+public enum Snow {
+    SNOW_ONE_HOUR("1h"),
+    SNOW_THREE_HOURS("3h");
 
     private String field;
 
-    Clouds(String field) {
-        this.field=field;
+    Snow(String field) {
+        this.field = field;
     }
 
     @Override
