@@ -1,11 +1,11 @@
 package com.spartaglobal.eng76.framework.dto;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.spartaglobal.eng76.framework.connectionmanager.ConnectionManager;
 
-import java.net.http.HttpResponse;
 import java.util.List;
 
 @JsonInclude(JsonInclude.Include.NON_NULL)
@@ -18,8 +18,8 @@ import java.util.List;
 
 public class WeatherListDTO {
 
-    @JsonProperty("coord")
-    private String coord;
+    @JsonProperty("cod")
+    private String cod;
 
     @JsonProperty("calctime")
     private String calctime;
@@ -30,14 +30,15 @@ public class WeatherListDTO {
     @JsonProperty("list")
     private List<WeatherDTO> list;
 
+    @JsonIgnore
     private ConnectionManager connectionManager;
 
     public WeatherListDTO() {
 
     }
 
-    public String getCoord() {
-        return coord;
+    public String getCod() {
+        return cod;
     }
 
     public String getCalctime() {
