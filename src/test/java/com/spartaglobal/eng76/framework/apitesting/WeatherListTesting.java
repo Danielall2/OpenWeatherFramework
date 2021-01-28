@@ -1,5 +1,6 @@
 package com.spartaglobal.eng76.framework.apitesting;
 
+import com.spartaglobal.eng76.framework.dto.Enums.Weather;
 import com.spartaglobal.eng76.framework.weatherapi.WeatherAPI;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeAll;
@@ -187,30 +188,45 @@ public class WeatherListTesting {
     }
 
     @ParameterizedTest
-    @ValueSource(strings = {"200","300", "500", "600", "701", "800"})
+    @ValueSource(strings = {"200","300", "500", "600", "701", "800", "100", "1000"})
     @DisplayName("Does the weather ID return a valid 'main' from the HashMap?")
     void isWeatherMainReturnedFromHashMap(String weatherID) {
+        System.out.println("Weather ID:: " + weatherID);
         if(weatherConditions.containsKey(weatherID)) {
-            System.out.println(getWeatherMain(weatherID));
+            System.out.println("Weather main category:: " + getWeatherMain(weatherID));
+        } else {
+            System.out.println("Weather ID not found in local data source");
         }
+
+        Assertions.assertTrue(weatherConditions.containsKey(weatherID));
     }
 
     @ParameterizedTest
-    @ValueSource(strings = {"200", "300", "500", "600", "701", "800"})
+    @ValueSource(strings = {"200", "300", "500", "600", "701", "800", "100", "1000"})
     @DisplayName("Does the weather ID return a valid 'description' from the HashMap?")
     void isWeatherDescriptionReturnedFromHashMap(String weatherID) {
+        System.out.println("Weather ID:: " + weatherID);
         if(weatherConditions.containsKey(weatherID)) {
-            System.out.println(getWeatherDescription(weatherID));
+            System.out.println("Weather description:: " + getWeatherDescription(weatherID));
+        } else {
+            System.out.println("Weather ID not found in local data source");
         }
+
+        Assertions.assertTrue(weatherConditions.containsKey(weatherID));
     }
 
     @ParameterizedTest
-    @ValueSource(strings = {"200", "300", "500", "600", "701", "800"})
+    @ValueSource(strings = {"200", "300", "500", "600", "701", "800", "100", "1000"})
     @DisplayName("Does the weather ID return a valid 'icon id' from the HashMap?")
     void isWeatherIconIDReturnedFromHashMap(String weatherID) {
+        System.out.println("Weather ID:: " + weatherID);
         if(weatherConditions.containsKey(weatherID)) {
-            System.out.println(getWeatherIconID(weatherID));
+            System.out.println("Weather icon ID:: " + getWeatherIconID(weatherID));
+        } else {
+            System.out.println("Weather ID not found in local data source");
         }
+
+        Assertions.assertTrue(weatherConditions.containsKey(weatherID));
     }
 
     @ParameterizedTest
@@ -235,8 +251,8 @@ public class WeatherListTesting {
     @DisplayName("Does the current weather condition(s) have a valid ID?")
     void isResponseWeatherIDValid(String city)  {
         for(HashMap<String, String> currentWeather:WeatherAPI.ofCity(city, properties.getProperty("apikey")).getWeather()) {
-            System.out.println("Current weather ID ::" + currentWeather.get("id"));
-            Assertions.assertTrue(weatherConditions.containsKey(currentWeather.get("id")));
+            System.out.println("Current weather ID ::" + currentWeather.get(Weather.ID.toString()));
+            Assertions.assertTrue(weatherConditions.containsKey(currentWeather.get(Weather.ID.toString())));
         }
     }
 
@@ -249,9 +265,9 @@ public class WeatherListTesting {
     @DisplayName("Does the current weather condition(s) have a valid Main category?")
     void isResponseWeatherMainValid(String city) {
         for(HashMap<String, String> currentWeather:WeatherAPI.ofCity(city, properties.getProperty("apikey")).getWeather()) {
-            System.out.println("Current weather ID ::" + currentWeather.get("id"));
-            System.out.println("Current weather Main category ::" + currentWeather.get("main"));
-            Assertions.assertEquals(currentWeather.get("main"), getWeatherMain(currentWeather.get("id")));
+            System.out.println("Current weather ID ::" + currentWeather.get(Weather.ID.toString()));
+            System.out.println("Current weather Main category ::" + currentWeather.get(Weather.MAIN.toString()));
+            Assertions.assertEquals(currentWeather.get(Weather.MAIN.toString()), getWeatherMain(currentWeather.get(Weather.ID.toString())));
         }
     }
 
@@ -264,9 +280,9 @@ public class WeatherListTesting {
     @DisplayName("Does the current weather condition(s) have a valid Description?")
     void isResponseWeatherDescriptionValid(String city) {
         for(HashMap<String, String> currentWeather:WeatherAPI.ofCity(city, properties.getProperty("apikey")).getWeather()) {
-            System.out.println("Current weather ID ::" + currentWeather.get("id"));
-            System.out.println("Current weather Description ::" + currentWeather.get("description"));
-            Assertions.assertEquals(currentWeather.get("description"), getWeatherDescription(currentWeather.get("id")));
+            System.out.println("Current weather ID ::" + currentWeather.get(Weather.ID.toString()));
+            System.out.println("Current weather Description ::" + currentWeather.get(Weather.DESCRIPTION.toString()));
+            Assertions.assertEquals(currentWeather.get(Weather.DESCRIPTION.toString()), getWeatherDescription(currentWeather.get(Weather.ID.toString())));
         }
     }
 
@@ -279,14 +295,14 @@ public class WeatherListTesting {
     @DisplayName("Does the current weather condition(s) have a valid Icon ID?")
     void isResponseWeatherIconValid(String city) {
         for(HashMap<String, String> currentWeather:WeatherAPI.ofCity(city, properties.getProperty("apikey")).getWeather()) {
-            if(currentWeather.get("main").equals("Clear") || currentWeather.get("main").equals("Clouds")) {
-                System.out.println("Current weather ID ::" + currentWeather.get("id"));
-                System.out.println("Current weather Icon ID ::" + currentWeather.get("icon"));
-                Assertions.assertTrue(getWeatherIconID(currentWeather.get("id")).contains(currentWeather.get("icon")));
+            if(currentWeather.get(Weather.MAIN.toString()).equals("Clear") || currentWeather.get(Weather.MAIN.toString()).equals("Clouds")) {
+                System.out.println("Current weather ID ::" + currentWeather.get(Weather.ID.toString()));
+                System.out.println("Current weather Icon ID ::" + currentWeather.get(Weather.ICON.toString()));
+                Assertions.assertTrue(getWeatherIconID(currentWeather.get(Weather.ID.toString())).contains(currentWeather.get(Weather.ICON.toString())));
             } else {
-                System.out.println("Current weather ID ::" + currentWeather.get("id"));
-                System.out.println("Current weather Icon ID ::" + currentWeather.get("icon"));
-                Assertions.assertEquals(currentWeather.get("icon"), getWeatherIconID(currentWeather.get("id")));
+                System.out.println("Current weather ID ::" + currentWeather.get(Weather.ID.toString()));
+                System.out.println("Current weather Icon ID ::" + currentWeather.get(Weather.ICON.toString()));
+                Assertions.assertEquals(getWeatherIconID(currentWeather.get(Weather.ID.toString())), currentWeather.get(Weather.ICON.toString()));
             }
         }
     }
