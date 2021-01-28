@@ -170,6 +170,12 @@ public class EnumTest {
     }
 
     @Test
+    @DisplayName("Wind Gust toString returns correct string")
+    void windGustToStringReturnsCorrectString() {
+        Assertions.assertEquals("gust", Wind.GUST.toString());
+    }
+
+    @Test
     @DisplayName("OptionalParam Mode toString returns correct string")
     void OptionalParamToStringReturnsCorrectString() {
         Assertions.assertEquals("mode", OptionalParam.MODE.toString());
