@@ -7,26 +7,24 @@ import com.spartaglobal.eng76.framework.dto.ParentDTO;
 import com.spartaglobal.eng76.framework.dto.WeatherDTO;
 import com.spartaglobal.eng76.framework.dto.WeatherListDTO;
 
+import java.net.http.HttpResponse;
+
 public class Injector {
 
-    private ObjectMapper objectMapper = new ObjectMapper();
-    private ConnectionManager connectionManager = new ConnectionManager();
+    private static ObjectMapper objectMapper = new ObjectMapper();
 
-    public WeatherDTO injectIntoWeatherDTO(String url) {
-//        WeatherDTO weatherDTO = Factory.getDTO(url);
-        connectionManager.connectToAPI(url);
+    public static WeatherDTO injectIntoWeatherDTO(String response) {
         try {
-            return objectMapper.readValue(connectionManager.getHttpResponseBody(), WeatherDTO.class);
+            return objectMapper.readValue(response, WeatherDTO.class);
         } catch (JsonProcessingException e) {
             e.printStackTrace();
         }
         return null;
     }
 
-    public WeatherListDTO injectIntoWeatherListDTO(String url) {
-        connectionManager.connectToAPI(url);
+    public static WeatherListDTO injectIntoWeatherListDTO(String response) {
         try {
-            return objectMapper.readValue(connectionManager.getHttpResponseBody(), WeatherListDTO.class);
+            return objectMapper.readValue(response, WeatherListDTO.class);
         } catch (JsonProcessingException e) {
             e.printStackTrace();
         }
