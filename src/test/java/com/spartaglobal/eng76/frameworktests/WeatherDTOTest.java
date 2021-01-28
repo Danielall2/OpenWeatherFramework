@@ -19,13 +19,11 @@ import static org.junit.jupiter.api.Assertions.fail;
 
 class WeatherDTOTest {
     private static WeatherDTO weatherDTO;
-    private static Properties properties;
-    private static String apikey;
+    private static String apikey = WeatherAPI.getAPIKey();;
     private static int cityId = 2172797;
 
     @BeforeAll
     static void setup(){
-        apikey = WeatherAPI.getAPIKey();
         weatherDTO = WeatherAPI.ofCity(cityId, apikey);
     }
 
@@ -137,8 +135,6 @@ class WeatherDTOTest {
         Assertions.assertEquals(sys.get("type"), "1");
         Assertions.assertEquals(sys.get("id"), "9490");
         Assertions.assertEquals(sys.get("country"), "AU");
-        Assertions.assertEquals(sys.get("sunrise"), "1611777781");
-        Assertions.assertEquals(sys.get("sunset"), "1611824184");
     }
     
     @Test
