@@ -3,9 +3,7 @@ package com.spartaglobal.eng76.framework.dto;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
-import com.fasterxml.jackson.databind.util.JSONPObject;
 
-import java.util.ArrayList;
 import java.util.List;
 
 @JsonInclude(JsonInclude.Include.NON_NULL)
@@ -24,13 +22,11 @@ public class WeatherListDTO {
     @JsonProperty("calctime")
     private String calctime;
 
-    @JsonProperty("count")
+    @JsonProperty("cnt")
     private String count;
 
     @JsonProperty("list")
-    private List<JSONPObject> list;
-
-    private ArrayList<WeatherDTO> weatherDTOList;
+    private List<WeatherDTO> list;
 
     public WeatherListDTO() {
 
@@ -48,12 +44,9 @@ public class WeatherListDTO {
         return count;
     }
 
-    public List<JSONPObject> getList() {
+    public List<WeatherDTO> getList() {
         return list;
     }
-
-    // Need a method to convert inject the list of JSON objects into a list of WeatherDTOs
-
 
 
 }
