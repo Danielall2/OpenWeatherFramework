@@ -257,8 +257,8 @@ public class URLBuilderTests {
     @Test
     @DisplayName("Check ofCitiesInCircle returns correct String")
     void checkOfCitiesInCircle(){
-        String expected = "https://api.openweathermap.org/data/2.5/find?lat=1&lon=2&appid=" + WeatherAPI.getAPIKey();
-        String actual = URLBuilder.ofCitiesInCircle(1,2, WeatherAPI.getAPIKey()).toString();
+        String expected = "https://api.openweathermap.org/data/2.5/find?lat=1.0&lon=2.0&appid=" + WeatherAPI.getAPIKey();
+        String actual = URLBuilder.ofCitiesInCircle(1.0,2.0, WeatherAPI.getAPIKey()).toString();
 
         Assertions.assertEquals(expected,actual);
     }
