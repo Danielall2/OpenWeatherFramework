@@ -1,4 +1,4 @@
-package com.spartaglobal.eng76.frameworktests.apitesting;
+package com.spartaglobal.eng76.framework.apitesting;
 
 import com.spartaglobal.eng76.framework.connectionmanager.ConnectionManager;
 import com.spartaglobal.eng76.framework.urlbuilder.URLBuilder;
@@ -6,6 +6,8 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.ValueSource;
 
 import java.io.FileReader;
 import java.io.IOException;
