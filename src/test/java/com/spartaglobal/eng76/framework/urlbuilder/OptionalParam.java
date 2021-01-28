@@ -1,5 +1,7 @@
 package com.spartaglobal.eng76.framework.urlbuilder;
 
+import java.util.Map;
+
 /**
  * @author Samurah
  * @version 1.0
@@ -18,6 +20,9 @@ public enum OptionalParam {
         this.field = field;
     }
 
+    public Map.Entry<String, String> ofValue(String value){
+        return Map.entry(this.toString(), value);
+    }
 
     @Override
     public String toString() {
