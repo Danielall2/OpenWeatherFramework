@@ -1,4 +1,4 @@
-package com.spartaglobal.eng76.frameworktests.apitesting;
+package com.spartaglobal.eng76.framework.apitesting;
 
 public class ExampleTestBed {
 }

@@ -142,8 +142,6 @@ class WeatherDTOTest {
         Assertions.assertEquals(sys.get("type"), "1");
         Assertions.assertEquals(sys.get("id"), "9490");
         Assertions.assertEquals(sys.get("country"), "AU");
-        Assertions.assertEquals(sys.get("sunrise"), "1611777781");
-        Assertions.assertEquals(sys.get("sunset"), "1611824184");
     }
     
     @Test

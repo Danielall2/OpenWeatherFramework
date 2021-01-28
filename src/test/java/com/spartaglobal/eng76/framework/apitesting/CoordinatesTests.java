@@ -3,6 +3,7 @@ package com.spartaglobal.eng76.framework.apitesting;
 import com.spartaglobal.eng76.framework.connectionmanager.ConnectionManager;
 import com.spartaglobal.eng76.framework.dto.Enums.Coordinates;
 import com.spartaglobal.eng76.framework.dto.WeatherDTO;
+import com.spartaglobal.eng76.framework.exceptions.FailedHttpConnectionException;
 import com.spartaglobal.eng76.framework.urlbuilder.URLBuilder;
 import com.spartaglobal.eng76.framework.weatherapi.WeatherAPI;
 import org.junit.jupiter.api.Assertions;
@@ -23,7 +24,11 @@ public class CoordinatesTests {
     @CsvSource({"Sydney", "London", "Toronto", "Tokyo"})
     @DisplayName("Check coordinate has two coordinate values")
     void checkCoordinateHasTwoCoordinateValues(String city) {
-        weatherDTO = WeatherAPI.ofCity(city, WeatherAPI.getAPIKey());
+        try {
+            weatherDTO = WeatherAPI.ofCity(city, WeatherAPI.getAPIKey());
+        } catch (FailedHttpConnectionException e) {
+            e.printStackTrace();
+        }
         Assertions.assertEquals(weatherDTO.getCoord().size(), 2);
     }
 
@@ -31,7 +36,11 @@ public class CoordinatesTests {
     @CsvSource({"Sydney", "London", "Toronto", "Tokyo"})
     @DisplayName("Check latitude value is between 90 and negative 90")
     void checkLatitudeValueIsBetween90AndNegative90(String city) {
-        weatherDTO = WeatherAPI.ofCity(city, WeatherAPI.getAPIKey());
+        try {
+            weatherDTO = WeatherAPI.ofCity(city, WeatherAPI.getAPIKey());
+        } catch (FailedHttpConnectionException e) {
+            e.printStackTrace();
+        }
         float latitude = Float.parseFloat(weatherDTO.getCoord().get(Coordinates.LATITUDE.toString()));
         Assertions.assertTrue(-90 <= latitude && latitude <= 90);
     }
@@ -40,7 +49,11 @@ public class CoordinatesTests {
     @CsvSource({"Sydney", "London", "Toronto", "Tokyo"})
     @DisplayName("Check longitude is between 180 and negative 180")
     void checkLongitudeIsBetween180AndNegative180(String city) {
-        weatherDTO = WeatherAPI.ofCity(city, WeatherAPI.getAPIKey());
+        try {
+            weatherDTO = WeatherAPI.ofCity(city, WeatherAPI.getAPIKey());
+        } catch (FailedHttpConnectionException e) {
+            e.printStackTrace();
+        }
         float longitude = Float.parseFloat(weatherDTO.getCoord().get(Coordinates.LONGITUDE.toString()));
         Assertions.assertTrue(-180 <= longitude && longitude <= 180);
     }
