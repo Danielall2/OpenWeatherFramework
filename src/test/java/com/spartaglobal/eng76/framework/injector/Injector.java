@@ -3,7 +3,6 @@ package com.spartaglobal.eng76.framework.injector;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.spartaglobal.eng76.framework.connectionmanager.ConnectionManager;
-import com.spartaglobal.eng76.framework.dto.ParentDTO;
 import com.spartaglobal.eng76.framework.dto.WeatherDTO;
 import com.spartaglobal.eng76.framework.dto.WeatherListDTO;
 
@@ -13,18 +12,22 @@ public class Injector {
 
     private static final ObjectMapper objectMapper = new ObjectMapper();
 
-    public static WeatherDTO injectIntoWeatherDTO(String response) {
+    public static WeatherDTO injectIntoWeatherDTO(ConnectionManager connectionManager) {
         try {
-            return objectMapper.readValue(response, WeatherDTO.class);
+            WeatherDTO weatherDTO = objectMapper.readValue(connectionManager.getHttpResponse().body(), WeatherDTO.class);
+            weatherDTO.setConnectionManager(connectionManager);
+            return weatherDTO;
         } catch (JsonProcessingException e) {
             e.printStackTrace();
         }
         return null;
     }
 
-    public static WeatherListDTO injectIntoWeatherListDTO(String response) {
+    public static WeatherListDTO injectIntoWeatherListDTO(ConnectionManager connectionManager) {
         try {
-            return objectMapper.readValue(response, WeatherListDTO.class);
+            WeatherListDTO weatherListDTO = objectMapper.readValue(connectionManager.getHttpResponse().body(), WeatherListDTO.class);
+            weatherListDTO.setConnectionManager(connectionManager);
+            return weatherListDTO;
         } catch (JsonProcessingException e) {
             e.printStackTrace();
         }
@@ -38,3 +41,4 @@ public class Injector {
 //    }
 
 }
+

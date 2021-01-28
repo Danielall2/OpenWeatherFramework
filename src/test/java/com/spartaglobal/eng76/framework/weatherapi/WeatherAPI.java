@@ -6,7 +6,10 @@ import com.spartaglobal.eng76.framework.dto.WeatherListDTO;
 import com.spartaglobal.eng76.framework.injector.Injector;
 import com.spartaglobal.eng76.framework.urlbuilder.URLBuilder;
 
+import java.io.FileReader;
+import java.io.IOException;
 import java.util.Map;
+import java.util.Properties;
 
 public class WeatherAPI {
 
@@ -21,8 +24,7 @@ public class WeatherAPI {
         }
         connectionManager = new ConnectionManager();
         connectionManager.connectToAPI(urlBuilder.toString());
-        System.out.println(urlBuilder.toString());
-        return Injector.injectIntoWeatherDTO(connectionManager.getHttpResponseBody());
+        return Injector.injectIntoWeatherDTO(connectionManager);
     }
 
     @SafeVarargs
@@ -33,7 +35,7 @@ public class WeatherAPI {
         }
         connectionManager = new ConnectionManager();
         connectionManager.connectToAPI(urlBuilder.toString());
-        return Injector.injectIntoWeatherDTO(connectionManager.getHttpResponseBody());
+        return Injector.injectIntoWeatherDTO(connectionManager);
     }
 
     @SafeVarargs
@@ -44,7 +46,7 @@ public class WeatherAPI {
         }
         connectionManager = new ConnectionManager();
         connectionManager.connectToAPI(urlBuilder.toString());
-        return Injector.injectIntoWeatherDTO(connectionManager.getHttpResponseBody());
+        return Injector.injectIntoWeatherDTO(connectionManager);
     }
 
     @SafeVarargs
@@ -55,7 +57,7 @@ public class WeatherAPI {
         }
         connectionManager = new ConnectionManager();
         connectionManager.connectToAPI(urlBuilder.toString());
-        return Injector.injectIntoWeatherDTO(connectionManager.getHttpResponseBody());
+        return Injector.injectIntoWeatherDTO(connectionManager);
     }
 
     @SafeVarargs
@@ -66,7 +68,7 @@ public class WeatherAPI {
         }
         connectionManager = new ConnectionManager();
         connectionManager.connectToAPI(urlBuilder.toString());
-        return Injector.injectIntoWeatherListDTO(connectionManager.getHttpResponseBody());
+        return Injector.injectIntoWeatherListDTO(connectionManager);
     }
 
     @SafeVarargs
@@ -77,7 +79,7 @@ public class WeatherAPI {
         }
         connectionManager = new ConnectionManager();
         connectionManager.connectToAPI(urlBuilder.toString());
-        return Injector.injectIntoWeatherListDTO(connectionManager.getHttpResponseBody());
+        return Injector.injectIntoWeatherListDTO(connectionManager);
     }
 
     @SafeVarargs
@@ -88,7 +90,7 @@ public class WeatherAPI {
         }
         connectionManager = new ConnectionManager();
         connectionManager.connectToAPI(urlBuilder.toString());
-        return Injector.injectIntoWeatherListDTO(connectionManager.getHttpResponseBody());
+        return Injector.injectIntoWeatherListDTO(connectionManager);
     }
 
     @SafeVarargs
@@ -99,7 +101,7 @@ public class WeatherAPI {
         }
         connectionManager = new ConnectionManager();
         connectionManager.connectToAPI(urlBuilder.toString());
-        return Injector.injectIntoWeatherDTO(connectionManager.getHttpResponseBody());
+        return Injector.injectIntoWeatherDTO(connectionManager);
     }
 
     @SafeVarargs
@@ -110,7 +112,7 @@ public class WeatherAPI {
         }
         connectionManager = new ConnectionManager();
         connectionManager.connectToAPI(urlBuilder.toString());
-        return Injector.injectIntoWeatherDTO(connectionManager.getHttpResponseBody());
+        return Injector.injectIntoWeatherDTO(connectionManager);
     }
 
 }
