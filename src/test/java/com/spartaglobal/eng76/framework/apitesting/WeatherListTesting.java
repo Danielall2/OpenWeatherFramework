@@ -1,6 +1,5 @@
 package com.spartaglobal.eng76.framework.apitesting;
 
-import com.spartaglobal.eng76.framework.dto.WeatherDTO;
 import com.spartaglobal.eng76.framework.weatherapi.WeatherAPI;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeAll;
