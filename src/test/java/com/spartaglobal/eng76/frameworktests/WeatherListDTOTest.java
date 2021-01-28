@@ -138,7 +138,7 @@ class WeatherListDTOTest {
     @DisplayName("getList as ArrayList of WeatherDTOs")
     void testGetList() {
         Assertions.assertEquals(ArrayList.class, weatherListDTO.getList().getClass());
-        for (int i = 0; i < 4; i++) {
+        for (int i = 0; i < weatherListDTO.getList().size(); i++) {
             Assertions.assertEquals(WeatherDTO.class, weatherListDTO.getList().get(i).getClass());
         }
     }
@@ -147,7 +147,7 @@ class WeatherListDTOTest {
     @DisplayName("getList as ArrayList of WeatherDTOs (Box)")
     void testGetListBox() {
         Assertions.assertEquals(ArrayList.class, weatherListDTOBox.getList().getClass());
-        for (int i = 0; i < 4; i++) {
+        for (int i = 0; i < weatherListDTOBox.getList().size(); i++) {
             Assertions.assertEquals(WeatherDTO.class, weatherListDTOBox.getList().get(i).getClass());
         }
     }
@@ -156,7 +156,7 @@ class WeatherListDTOTest {
     @DisplayName("getList as ArrayList of WeatherDTOs (Circle)")
     void testGetListCircle() {
         Assertions.assertEquals(ArrayList.class, weatherListDTOCircle.getList().getClass());
-        for (int i = 0; i < 4; i++) {
+        for (int i = 0; i < weatherListDTOCircle.getList().size(); i++) {
             Assertions.assertEquals(WeatherDTO.class, weatherListDTOCircle.getList().get(i).getClass());
         }
     }
