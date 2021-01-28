@@ -44,8 +44,15 @@ public class ConnectionManager {
         return httpResponse.body();
     }
 
-    public void printAllResponseHeaders() {
-        headersMap.entrySet().stream().forEach(e -> System.out.println(e.getKey() + " " + e.getValue()));
+    public HttpHeaders getAllResponseHeaders() {
+        return getHttpResponse().headers();
     }
 
+    public HttpResponse<String> getHttpResponse() {
+        return httpResponse;
+    }
+
+    public HttpRequest getHttpRequest() {
+        return httpRequest;
+    }
 }
