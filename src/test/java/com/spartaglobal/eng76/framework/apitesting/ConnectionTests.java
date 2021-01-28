@@ -8,6 +8,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.CsvSource;
 import org.junit.jupiter.params.provider.ValueSource;
 
 import java.io.FileReader;
@@ -23,18 +24,20 @@ public class ConnectionTests {
 
     }
 
-    @Test
+    @ParameterizedTest
+    @CsvSource({"Sydney", "London", "Toronto", "Tokyo"})
     @DisplayName("Check valid url gives status code 200")
-    void checkValidUrlGivesStatusCode200() {
-        String url = URLBuilder.ofCity("London", WeatherAPI.getAPIKey()).toString();
+    void checkValidUrlGivesStatusCode200(String city) {
+        String url = URLBuilder.ofCity(city, WeatherAPI.getAPIKey()).toString();
         connectionManager.connectToAPI(url);
         Assertions.assertEquals(200, connectionManager.getStatusCode());
     }
 
-    @Test
+    @ParameterizedTest
+    @CsvSource({"Sydregney", "Lowdon", "Torontrhto", "Toyko", "L"})
     @DisplayName("Check invalid url gives status code 404")
-    void checkInvalidUrlGivesStatusCode404() {
-        String url = URLBuilder.ofCity("L", WeatherAPI.getAPIKey()).toString();
+    void checkInvalidUrlGivesStatusCode404(String city) {
+        String url = URLBuilder.ofCity(city, WeatherAPI.getAPIKey()).toString();
         connectionManager.connectToAPI(url);
         Assertions.assertEquals(404, connectionManager.getStatusCode());
     }
@@ -42,15 +45,17 @@ public class ConnectionTests {
     @Test
     @DisplayName("Check false apikey gives status code 401")
     void checkFalseApikeyGivesStatusCode401() {
-        String url = URLBuilder.ofCity("London", "gudne48fhe634h6ghewgd633hdyftdeh").toString();
+        String fakeAPIKey = "gudne48fhe634h6ghewgd633hdyftdeh";
+        String url = URLBuilder.ofCity("London", fakeAPIKey).toString();
         connectionManager.connectToAPI(url);
         Assertions.assertEquals(401, connectionManager.getStatusCode());
     }
 
-    @Test
+    @ParameterizedTest
+    @ValueSource(ints = {0000000, 0, 0000} )
     @DisplayName("Check incorrect city id returns 400")
-    void checkIncorrectCityIdReturns400() {
-        String url = URLBuilder.ofCity(0000000, WeatherAPI.getAPIKey()).toString();
+    void checkIncorrectCityIdReturns400(int badCityId) {
+        String url = URLBuilder.ofCity(badCityId, WeatherAPI.getAPIKey()).toString();
         connectionManager.connectToAPI(url);
         Assertions.assertEquals(400, connectionManager.getStatusCode());
     }
