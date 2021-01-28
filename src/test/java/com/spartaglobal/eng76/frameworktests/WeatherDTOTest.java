@@ -2,6 +2,7 @@ package com.spartaglobal.eng76.frameworktests;
 
 import com.spartaglobal.eng76.framework.connectionmanager.ConnectionManager;
 import com.spartaglobal.eng76.framework.dto.WeatherDTO;
+import com.spartaglobal.eng76.framework.exceptions.FailedHttpConnectionException;
 import com.spartaglobal.eng76.framework.weatherapi.WeatherAPI;
 import org.junit.jupiter.api.*;
 
@@ -26,7 +27,11 @@ class WeatherDTOTest {
     @BeforeAll
     static void setup(){
         apikey = WeatherAPI.getAPIKey();
-        weatherDTO = WeatherAPI.ofCity(cityId, apikey);
+        try {
+            weatherDTO = WeatherAPI.ofCity(cityId, apikey);
+        } catch (FailedHttpConnectionException e) {
+            e.printStackTrace();
+        }
     }
 
     @Test

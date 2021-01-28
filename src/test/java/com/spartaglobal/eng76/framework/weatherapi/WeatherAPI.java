@@ -84,7 +84,7 @@ public class WeatherAPI {
     }
 
     @SafeVarargs
-    public static WeatherListDTO ofCitiesInCircle(long lat, long lon, String apikey, Map.Entry<String, String>... optionalParameters) throws FailedHttpConnectionException {
+    public static WeatherListDTO ofCitiesInCircle(double lat, double lon, String apikey, Map.Entry<String, String>... optionalParameters) throws FailedHttpConnectionException {
         URLBuilder urlBuilder = URLBuilder.ofCitiesInCircle(lat, lon, apikey);
         for(Map.Entry<String, String> optionalParam:optionalParameters){
             urlBuilder.addParam(optionalParam.getKey(), optionalParam.getValue());

@@ -174,7 +174,7 @@ public class URLBuilder {
         return create(BASE_URL + "box/city?" + "bbox=" + lon_left + "," + lat_bottom + "," + lon_right + "," + lat_top + "," + zoom, apikey);
     }
 
-    public static URLBuilder ofCitiesInCircle(long lat, long lon, String apikey) {
+    public static URLBuilder ofCitiesInCircle(double lat, double lon, String apikey) {
         return create(BASE_URL + "find?" + "lat=" + lat + "&lon=" + lon, apikey);
     }
 
