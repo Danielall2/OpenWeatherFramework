@@ -70,6 +70,6 @@ public class HeadersTestBed {
         String url = URLBuilder.ofCity(location, properties.getProperty("apikey")).toString();
         ConnectionManager connectionManager = new ConnectionManager();
         connectionManager.connectToAPI(url);
-        return connectionManager.getHttpHeaders();
+        return connectionManager.getAllResponseHeaders();
     }
 }
