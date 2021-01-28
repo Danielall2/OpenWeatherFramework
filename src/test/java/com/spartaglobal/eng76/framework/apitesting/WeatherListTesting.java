@@ -12,6 +12,7 @@ import org.junit.jupiter.params.provider.ValueSource;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Properties;
 
 public class WeatherListTesting {
@@ -210,6 +211,19 @@ public class WeatherListTesting {
         if(weatherConditions.containsKey(weatherID)) {
             System.out.println(getWeatherIconID(weatherID));
         }
+    }
+
+    @ParameterizedTest
+    @CsvSource({"leeds" ,
+                "berlin",
+                "lasvegas",
+                "johannesburg",
+                "brasilia"})
+    @DisplayName("Does the current city have at least one weather condition?")
+    void isWeatherArrayEmpty(String city) {
+        List<HashMap<String, String>> currentWeather = WeatherAPI.ofCity(city, properties.getProperty("apikey")).getWeather();
+        System.out.println(city + " currently has " + currentWeather.size() + " weather condition(s)");
+        Assertions.assertTrue(currentWeather.size() > 0);
     }
 
     @ParameterizedTest
