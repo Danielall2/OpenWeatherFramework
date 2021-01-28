@@ -1,6 +1,5 @@
 package com.spartaglobal.eng76.framework.urlbuilder;
 
-import java.net.URL;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Map;
