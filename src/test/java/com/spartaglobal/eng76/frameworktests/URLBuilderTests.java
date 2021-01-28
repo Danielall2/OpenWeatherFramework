@@ -70,7 +70,7 @@ public class URLBuilderTests {
         Exception exception = Assertions.assertThrows(IllegalArgumentException.class, () -> {URLBuilder.ofCity(null, WeatherAPI.getAPIKey());});
 
         String actual = exception.getMessage();
-        String expected = "Null values not allowed!";
+        String expected = "cityName cannot be null or empty!";
 
         Assertions.assertEquals(actual, expected);
 
