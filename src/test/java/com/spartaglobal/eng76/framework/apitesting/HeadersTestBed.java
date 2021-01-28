@@ -20,6 +20,10 @@ public class HeadersTestBed {
     HttpHeaders httpHeaders = null;
     String BaseURL = null;
 
+    /*
+     * testing not complete
+     */
+
     @BeforeAll
     public void initially(){
         Properties properties = new Properties();
@@ -31,7 +35,7 @@ public class HeadersTestBed {
         }
         ConnectionManager connectionManager = new ConnectionManager();
         connectionManager.connectToAPI(BaseURL);
-        httpHeaders = connectionManager.getHttpHeaders;
+        //httpHeaders = connectionManager.getHttpHeaders;
 
     }
 
@@ -42,14 +46,14 @@ public class HeadersTestBed {
 
 
     @ParameterizedTest
-    @ValueSource(urls = {})//contains random urls to return headers
+    @ValueSource(strings = {"London", "paris"})//contains random urls to return headers
     public void CheckHeadersAreReturnedFromRequests(String url){
         Assertions.assertEquals(9,httpHeaders.map().size());
     }
 
     @ParameterizedTest
     @ValueSource()
-    public void checkConnectionsHeaderReturnsKeepAlive(String URL){
+    public void checkConnectionsHeaderReturnsKeepAlive(String location){
         Assertions.assertEquals("keep-alive",httpHeaders.map().get("Connection"));
     }
 
@@ -67,7 +71,7 @@ public class HeadersTestBed {
 
     @Test
     public void checkDate(){
-        Assertions.assertTrue(httpHeaders.map().get("Date") == LocalDate.now().toString());
+        //Assertions.assertTrue(httpHeaders.map().get("Date") == LocalDate.now().toString());
     }
 
 }
