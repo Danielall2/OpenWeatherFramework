@@ -7,6 +7,7 @@ import com.spartaglobal.eng76.framework.dto.WeatherDTO;
 import com.spartaglobal.eng76.framework.dto.WeatherListDTO;
 import com.spartaglobal.eng76.framework.injector.Injector;
 import com.spartaglobal.eng76.framework.urlbuilder.URLBuilder;
+import com.spartaglobal.eng76.framework.weatherapi.WeatherAPI;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -18,21 +19,17 @@ import java.io.IOException;
 import java.util.Properties;
 
 public class BoundaryValuesTests {
-    Properties properties = new Properties();
+    String apiKey;
 
     @BeforeEach
     public void setup(){
-        try {
-            properties.load(new FileReader("src/test/resources/apikey.properties"));
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+        apiKey = WeatherAPI.getAPIKey();
     }
 
     @Test
     public void CheckReturnedCitiesInRectangle(){
         //todo
-        String url = URLBuilder.ofCitiesInRectangle(12,32,17,37,10, properties.getProperty("apikey")).toString();
+        String url = URLBuilder.ofCitiesInRectangle(12,32,17,37,10, apiKey).toString();
         ConnectionManager connectionManager = new ConnectionManager();
         connectionManager.connectToAPI(url);
         WeatherListDTO weatherListDTO = Injector.injectIntoWeatherListDTO(connectionManager);
@@ -110,7 +107,7 @@ public class BoundaryValuesTests {
     }
 
     private WeatherDTO getWeatherDTO(String location){
-        String url = URLBuilder.ofCity(location,properties.getProperty("apikey")).toString();
+        String url = URLBuilder.ofCity(location,apiKey).toString();
         ConnectionManager connectionManager = new ConnectionManager();
         connectionManager.connectToAPI(url);
         WeatherDTO weatherDTO = Injector.injectIntoWeatherDTO(connectionManager);
