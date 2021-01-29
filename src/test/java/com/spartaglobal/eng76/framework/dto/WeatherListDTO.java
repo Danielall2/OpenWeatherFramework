@@ -10,7 +10,9 @@ import java.util.List;
 
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
+        "message",
         "cod",
+        "count",
         "calctime",
         "cnt",
         "list",
@@ -18,8 +20,14 @@ import java.util.List;
 
 public class WeatherListDTO {
 
+    @JsonProperty("message")
+    private String message;
+
     @JsonProperty("cod")
     private String cod;
+
+    @JsonProperty("count")
+    private String count;
 
     @JsonProperty("calctime")
     private String calctime;
@@ -46,7 +54,7 @@ public class WeatherListDTO {
     }
 
     public String getCount() {
-        return cnt;
+        return count;
     }
 
     public List<WeatherDTO> getList() {
@@ -61,8 +69,12 @@ public class WeatherListDTO {
         this.connectionManager = connectionManager;
     }
 
-    // Need a method to convert inject the list of JSON objects into a list of WeatherDTOs
+    public String getMessage() {
+        return message;
+    }
 
-
+    public String getCnt() {
+        return cnt;
+    }
 }
 
