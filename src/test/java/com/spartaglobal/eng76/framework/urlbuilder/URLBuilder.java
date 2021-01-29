@@ -45,6 +45,33 @@ public class URLBuilder {
         this.apikey = apikey;
     }
 
+    /**
+     * Adds a parameter in {@code query};
+     * @param key String value
+     * @param value String value
+     * @return the same instance of URLBuilder, with the extra parameter added
+     */
+    public URLBuilder addParam(String key, String value){
+        Collection<Map.Entry<String, String>> params = splitParam(query);
+        if(key.contains(" ")){
+            throw new IllegalArgumentException("Invalid parameter key! Should not contain any white spaces.");
+        }
+        value = value.trim().replaceAll("\\s","%20");
+        params.add(Map.entry(key, value));
+        this.query = paramsNoAPIKey(params);
+        return this;
+    }
+
+    /**
+     * Adds a parameter in query
+     * @param key String
+     * @param value String
+     * @return the same instance of URLBuilder, with the extra parameter added.
+     */
+    public URLBuilder addParam(OptionalParam key, String value){
+        return addParam(key.toString(), value);
+    }
+
     public static URLBuilder create(String url, String apikey) {
         return decode(url, apikey);
     }
@@ -64,7 +91,7 @@ public class URLBuilder {
                 throw new IllegalArgumentException("Missing API key");
             }
             if (matcher.matches()) {
-                return new URLBuilder(matcher.group("baseurl"), matcher.group("path"), matcher.group("query"), apikey);
+                return new URLBuilder(matcher.group("baseurl"), matcher.group("path"), matcher.group("query").replaceAll("\\s","%20"), apikey);
             } else {
                 throw new IllegalArgumentException("Bad URL format.");
             }
