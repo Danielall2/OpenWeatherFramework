@@ -19,18 +19,18 @@ public class ConnectionManager {
     public ConnectionManager() {
     }
 
-    public void connectToAPI(String url) {
-        System.out.println(url);
-
+    public boolean connectToAPI(String url) {
         try {
             httpClient = HttpClient.newHttpClient();
             httpRequest = HttpRequest.newBuilder().uri(URI.create(url)).build();
             httpResponse = httpClient.send(httpRequest, HttpResponse.BodyHandlers.ofString());
             httpHeaders = httpResponse.headers();
             headersMap = httpHeaders.map();
-        } catch (InterruptedException | IOException e) {
-            e.printStackTrace();
+        } catch (InterruptedException | IOException ignored) {
+            return false;
         }
+
+        return true;
     }
 
     public int getStatusCode() {
@@ -46,8 +46,15 @@ public class ConnectionManager {
         return httpResponse.body();
     }
 
-    public void printAllResponseHeaders() {
-        headersMap.entrySet().stream().forEach(e -> System.out.println(e.getKey() + " " + e.getValue()));
+    public HttpHeaders getAllResponseHeaders() {
+        return getHttpResponse().headers();
     }
 
+    public HttpResponse<String> getHttpResponse() {
+        return httpResponse;
+    }
+
+    public HttpRequest getHttpRequest() {
+        return httpRequest;
+    }
 }
