@@ -142,8 +142,8 @@ public class URLBuilder {
         return create(BASE_URL + "weather?" + "q=" + cityName, apikey);
     }
 
-    public static URLBuilder ofCity(String cityName, String stateCode, String apikey) {
-        return create(BASE_URL + "weather?" + "q=" + cityName + "," + stateCode, apikey);
+    public static URLBuilder ofCity(String cityName, String countryCode, String apikey) {
+        return create(BASE_URL + "weather?" + "q=" + cityName + "," + countryCode, apikey);
     }
 
     public static URLBuilder ofCity(String cityName, String stateCode, String countryCode, String apikey) {
@@ -169,7 +169,7 @@ public class URLBuilder {
         return create(BASE_URL + "box/city?" + "bbox=" + lon_left + "," + lat_bottom + "," + lon_right + "," + lat_top + "," + zoom, apikey);
     }
 
-    public static URLBuilder ofCitiesInCircle(long lat, long lon, String apikey) {
+    public static URLBuilder ofCitiesInCircle(double lat, double lon, String apikey) {
         return create(BASE_URL + "find?" + "lat=" + lat + "&lon=" + lon, apikey);
     }
 

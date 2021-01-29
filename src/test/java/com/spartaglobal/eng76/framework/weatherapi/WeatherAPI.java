@@ -29,8 +29,8 @@ public class WeatherAPI {
     }
 
     @SafeVarargs
-    public static WeatherDTO ofCity(String cityName, String stateCode, String apikey, Map.Entry<String, String>... optionalParameters) throws FailedHttpConnectionException {
-        URLBuilder urlBuilder = URLBuilder.ofCity(cityName, stateCode, apikey);
+    public static WeatherDTO ofCity(String cityName, String countryCode, String apikey, Map.Entry<String, String>... optionalParameters) throws FailedHttpConnectionException {
+        URLBuilder urlBuilder = URLBuilder.ofCity(cityName, countryCode, apikey);
         for(Map.Entry<String, String> optionalParam:optionalParameters){
             urlBuilder.addParam(optionalParam.getKey(), optionalParam.getValue());
         }
