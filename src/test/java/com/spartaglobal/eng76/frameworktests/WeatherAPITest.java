@@ -8,7 +8,9 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.EmptySource;
 import org.junit.jupiter.params.provider.NullAndEmptySource;
+import org.junit.jupiter.params.provider.NullSource;
 
 import java.util.Map;
 
@@ -81,7 +83,7 @@ class WeatherAPITest {
     }
 
     @ParameterizedTest
-    @NullAndEmptySource
+    @EmptySource
     @DisplayName("Null or empty inputs throws IllegalArgumentException for additional parameters")
     void nullEmptyAdditionalParamsThrowsException(String input) {
         Map.Entry<String, String> map = Map.entry(input, input);
@@ -180,7 +182,7 @@ class WeatherAPITest {
         } catch (FailedHttpConnectionException e) {
             e.printStackTrace();
         }
-        Assertions.assertEquals("5", weatherListDTO.getCnt());
+        Assertions.assertEquals("5", weatherListDTO.getCount());
     }
 
     @Test
