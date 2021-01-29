@@ -31,7 +31,6 @@ public class HeadersTestBed {
         }
     }
 
-
     @ParameterizedTest
     @ValueSource(strings = {"London", "paris"})//contains random urls to return headers
     public void CheckHeadersAreReturnedFromRequests(String location){
@@ -62,6 +61,7 @@ public class HeadersTestBed {
 
     @Test
     public void checkDate(){
+        //todo: compare date to todays date
         //Assertions.assertTrue(httpHeaders.map().get("Date") == LocalDate.now().toString());
         //Assertions.assertTrue(httpHeaders.map().get("Date").toString().contains(LocalDate.now().format().toString()));
     }

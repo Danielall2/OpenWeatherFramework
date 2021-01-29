@@ -8,7 +8,9 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.EmptySource;
 import org.junit.jupiter.params.provider.NullAndEmptySource;
+import org.junit.jupiter.params.provider.NullSource;
 
 import java.util.Map;
 
@@ -81,7 +83,7 @@ class WeatherAPITest {
     }
 
     @ParameterizedTest
-    @NullAndEmptySource
+    @EmptySource
     @DisplayName("Null or empty inputs throws IllegalArgumentException for additional parameters")
     void nullEmptyAdditionalParamsThrowsException(String input) {
         Map.Entry<String, String> map = Map.entry(input, input);
@@ -118,23 +120,6 @@ class WeatherAPITest {
         });
     }
 
-    /*
-    Can't get State Code functionality to work - may be API bug rather than Framework.
-     */
-//    @Test
-//    @DisplayName("ofCity by cityName and stateCode returns correct city")
-//    void ofCityByCityNameAndStateCodeReturnsCorrectCity() {
-//        WeatherDTO weatherDTO = null;
-//        try {
-//            weatherDTO = WeatherAPI.ofCity("Washington", "OH", apikey);
-//        } catch (FailedHttpConnectionException e) {
-//            e.printStackTrace();
-//        }
-//        System.out.println(weatherDTO.getId());
-//        Assertions.assertEquals("Washington", weatherDTO.getName());
-//       // Assertions.assertEquals("KY", weatherDTO.get)
-//    }
-
     @Test
     @DisplayName("ofCity by cityName and countryCode returns correct city")
     void ofCityByCityNameCountryCodeReturnsCorrect() {
@@ -145,6 +130,18 @@ class WeatherAPITest {
             e.printStackTrace();
         }
         Assertions.assertEquals("2634715", weatherDTO.getId());
+    }
+
+    @Test
+    @DisplayName("ofCity by cityName, stateCode and countryCode returns correct city")
+    void ofCityByCityNameStateCodeCountryCodeReturnsCorrect() {
+        WeatherDTO weatherDTO = null;
+        try {
+            weatherDTO = WeatherAPI.ofCity("London", "OH", "US", apikey);
+        } catch (FailedHttpConnectionException e) {
+            e.printStackTrace();
+        }
+        Assertions.assertEquals("4517009", weatherDTO.getId());
     }
 
     @Test
@@ -180,7 +177,7 @@ class WeatherAPITest {
         } catch (FailedHttpConnectionException e) {
             e.printStackTrace();
         }
-        Assertions.assertEquals("5", weatherListDTO.getCnt());
+        Assertions.assertEquals("5", weatherListDTO.getCount());
     }
 
     @Test

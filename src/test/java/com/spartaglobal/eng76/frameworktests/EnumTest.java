@@ -9,6 +9,7 @@ import org.junit.jupiter.api.TestTemplate;
 
 import java.util.Map;
 
+
 import static org.junit.jupiter.api.Assertions.fail;
 
 public class EnumTest {
@@ -174,6 +175,7 @@ public class EnumTest {
     void windGustToStringReturnsCorrectString() {
         Assertions.assertEquals("gust", Wind.GUST.toString());
     }
+
 
     @Test
     @DisplayName("OptionalParam Mode toString returns correct string")
