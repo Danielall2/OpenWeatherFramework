@@ -120,23 +120,6 @@ class WeatherAPITest {
         });
     }
 
-    /*
-    Can't get State Code functionality to work - may be API bug rather than Framework.
-     */
-//    @Test
-//    @DisplayName("ofCity by cityName and stateCode returns correct city")
-//    void ofCityByCityNameAndStateCodeReturnsCorrectCity() {
-//        WeatherDTO weatherDTO = null;
-//        try {
-//            weatherDTO = WeatherAPI.ofCity("Washington", "OH", apikey);
-//        } catch (FailedHttpConnectionException e) {
-//            e.printStackTrace();
-//        }
-//        System.out.println(weatherDTO.getId());
-//        Assertions.assertEquals("Washington", weatherDTO.getName());
-//       // Assertions.assertEquals("KY", weatherDTO.get)
-//    }
-
     @Test
     @DisplayName("ofCity by cityName and countryCode returns correct city")
     void ofCityByCityNameCountryCodeReturnsCorrect() {
@@ -147,6 +130,18 @@ class WeatherAPITest {
             e.printStackTrace();
         }
         Assertions.assertEquals("2634715", weatherDTO.getId());
+    }
+
+    @Test
+    @DisplayName("ofCity by cityName, stateCode and countryCode returns correct city")
+    void ofCityByCityNameStateCodeCountryCodeReturnsCorrect() {
+        WeatherDTO weatherDTO = null;
+        try {
+            weatherDTO = WeatherAPI.ofCity("London", "OH", "US", apikey);
+        } catch (FailedHttpConnectionException e) {
+            e.printStackTrace();
+        }
+        Assertions.assertEquals("4517009", weatherDTO.getId());
     }
 
     @Test
