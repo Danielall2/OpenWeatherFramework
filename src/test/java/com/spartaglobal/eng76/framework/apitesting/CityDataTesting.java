@@ -1,6 +1,7 @@
 package com.spartaglobal.eng76.framework.apitesting;
 
 import com.spartaglobal.eng76.framework.dto.Enums.Sys;
+import com.spartaglobal.eng76.framework.exceptions.FailedHttpConnectionException;
 import com.spartaglobal.eng76.framework.weatherapi.WeatherAPI;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeAll;
@@ -50,16 +51,16 @@ public class CityDataTesting {
      * "id", "name", "sys":"country", "timezone".
      */
     private static void addCityData() {
-        cityData.put("1423", "leeds, GB, 0");
-        cityData.put("1262", "berlin, DE, 3600");
-        cityData.put("7113", "lasvegas, MX, -21600");
-        cityData.put("2007136", "johannesburg, ZA, 7200");
-        cityData.put("8336", "brasilia, BR, -10800");
-        cityData.put("9600", "sydney, AU, 39600");
-        cityData.put("2003771", "bangkok, TH, 25200");
-        cityData.put("2514", "cairo, EG, 7200");
-        cityData.put("322", "quebec, CA, -18000");
-        cityData.put("7878", "honolulu, US, -36000");
+        cityData.put("3333164", "leeds, GB, 0");
+        cityData.put("2950159", "berlin, DE, 3600");
+        cityData.put("4011743", "lasvegas, MX, -21600");
+        cityData.put("993800", "johannesburg, ZA, 7200");
+        cityData.put("3469058", "brasilia, BR, -10800");
+        cityData.put("2147714", "sydney, AU, 39600");
+        cityData.put("1609350", "bangkok, TH, 25200");
+        cityData.put("360630", "cairo, EG, 7200");
+        cityData.put("6325494", "quebec, CA, -18000");
+        cityData.put("5856195", "honolulu, US, -36000");
     }
 
     @BeforeAll
@@ -74,9 +75,9 @@ public class CityDataTesting {
     }
 
     @ParameterizedTest
-    @ValueSource(strings = {"1423", "1262", "7113",
-                            "2007136", "8336", "9600",
-                            "2003771", "2514", "322", "7878"})
+    @ValueSource(strings = {"3333164", "2950159", "4011743",
+                            "993800", "3469058", "2147714",
+                            "1609350", "360630", "6325494", "5856195"})
     @DisplayName("Does the city ID return a valid 'name' from the HashMap?")
     void isCityNameReturnedFromHashMap(String cityID) {
         System.out.println("City ID:: " + cityID);
@@ -90,9 +91,9 @@ public class CityDataTesting {
     }
 
     @ParameterizedTest
-    @ValueSource(strings = {"1423", "1262", "7113",
-                            "2007136", "8336", "9600",
-                            "2003771", "2514", "322", "7878"})
+    @ValueSource(strings = {"3333164", "2950159", "4011743",
+                            "993800", "3469058", "2147714",
+                            "1609350", "360630", "6325494", "5856195"})
     @DisplayName("Does the city ID return a valid 'country' from the HashMap?")
     void isCityCountryReturnedFromArrayList(String cityID) {
         System.out.println("City ID:: " + cityID);
@@ -106,9 +107,9 @@ public class CityDataTesting {
     }
 
     @ParameterizedTest
-    @ValueSource(strings = {"1423", "1262", "7113",
-                            "2007136", "8336", "9600",
-                            "2003771", "2514", "322", "7878"})
+    @ValueSource(strings = {"3333164", "2950159", "4011743",
+                            "993800", "3469058", "2147714",
+                            "1609350", "360630", "6325494", "5856195"})
     @DisplayName("Does the city ID return a valid 'timezone' from the HashMap?")
     void isCityTimezoneReturnedFromArrayList(String cityID) {
         System.out.println("City ID:: " + cityID);
@@ -129,10 +130,15 @@ public class CityDataTesting {
                 "quebec", "honolulu"})
     @DisplayName("Does the current city have a valid ID?")
     void isResponseCityIDValid(String cityName) {
-        String cityID = WeatherAPI.ofCity(cityName, properties.getProperty("apikey")).getSys().get(Sys.ID.toString());
-        System.out.println("City ID from response:: " + cityID);
+        String cityID = null;
+        try {
+            cityID = WeatherAPI.ofCity(cityName, WeatherAPI.getAPIKey()).getId();
+            System.out.println("City ID from response:: " + cityID);
 
-        Assertions.assertTrue(cityData.containsKey(cityID));
+            Assertions.assertTrue(cityData.containsKey(cityID));
+        } catch (FailedHttpConnectionException e) {
+            e.printStackTrace();
+        };
     }
 
     @ParameterizedTest
@@ -143,11 +149,16 @@ public class CityDataTesting {
                 "quebec", "honolulu"})
     @DisplayName("Does the current city have a valid name?")
     void isResponseCityNameValid(String cityNameLocal) {
-        String cityID = WeatherAPI.ofCity(cityNameLocal, properties.getProperty("apikey")).getSys().get(Sys.ID.toString());
-        String cityNameAPI = WeatherAPI.ofCity(cityNameLocal, properties.getProperty("apikey")).getName().toLowerCase();
-        System.out.println("City name from response:: " + cityNameAPI);
+        String cityID = null;
+        try {
+            cityID = WeatherAPI.ofCity(cityNameLocal, WeatherAPI.getAPIKey()).getId();
+            String cityNameAPI = WeatherAPI.ofCity(cityNameLocal, properties.getProperty("apikey")).getName().toLowerCase();
+            System.out.println("City name from response:: " + cityNameAPI);
 
-        Assertions.assertEquals(getCityName(cityID), cityNameAPI);
+            Assertions.assertEquals(getCityName(cityID), cityNameAPI);
+        } catch (FailedHttpConnectionException e) {
+            e.printStackTrace();
+        };
     }
 
     @ParameterizedTest
@@ -158,11 +169,16 @@ public class CityDataTesting {
                 "quebec", "honolulu"})
     @DisplayName("Does the current city have a valid country code?")
     void isResponseCityCountryValid(String cityName) {
-        String cityID = WeatherAPI.ofCity(cityName, properties.getProperty("apikey")).getSys().get(Sys.ID.toString());
-        String cityCountry = WeatherAPI.ofCity(cityName, properties.getProperty("apikey")).getSys().get(Sys.COUNTRY.toString());
-        System.out.println("City country from response:: " + cityCountry);
+        String cityID = null;
+        try {
+            cityID = WeatherAPI.ofCity(cityName, WeatherAPI.getAPIKey()).getId();
+            String cityCountry = WeatherAPI.ofCity(cityName, properties.getProperty("apikey")).getSys().get(Sys.COUNTRY.toString());
+            System.out.println("City country from response:: " + cityCountry);
 
-        Assertions.assertEquals(getCityCountry(cityID), cityCountry);
+            Assertions.assertEquals(getCityCountry(cityID), cityCountry);
+        } catch (FailedHttpConnectionException e) {
+            e.printStackTrace();
+        };
     }
 
     @ParameterizedTest
@@ -173,10 +189,15 @@ public class CityDataTesting {
                 "quebec", "honolulu"})
     @DisplayName("Does the current city have a valid timezone?")
     void isResponseCityTimezoneValid(String cityName) {
-        String cityID = WeatherAPI.ofCity(cityName, properties.getProperty("apikey")).getSys().get(Sys.ID.toString());
-        String cityTimezone = WeatherAPI.ofCity(cityName, properties.getProperty("apikey")).getTimezone();
-        System.out.println("City timezone from response:: " + cityTimezone);
+        String cityID = null;
+        try {
+            cityID = WeatherAPI.ofCity(cityName, WeatherAPI.getAPIKey()).getId();
+            String cityTimezone = WeatherAPI.ofCity(cityName, properties.getProperty("apikey")).getTimezone();
+            System.out.println("City timezone from response:: " + cityTimezone);
 
-        Assertions.assertEquals(getCityTimezone(cityID), cityTimezone);
+            Assertions.assertEquals(getCityTimezone(cityID), cityTimezone);
+        } catch (FailedHttpConnectionException e) {
+            e.printStackTrace();
+        };
     }
 }
