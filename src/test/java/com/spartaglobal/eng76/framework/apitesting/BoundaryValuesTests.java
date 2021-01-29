@@ -8,7 +8,9 @@ import com.spartaglobal.eng76.framework.dto.WeatherListDTO;
 import com.spartaglobal.eng76.framework.exceptions.FailedHttpConnectionException;
 import com.spartaglobal.eng76.framework.injector.Injector;
 import com.spartaglobal.eng76.framework.urlbuilder.URLBuilder;
+import com.spartaglobal.eng76.framework.weatherapi.WeatherAPI;
 import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Assumptions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -19,15 +21,11 @@ import java.io.IOException;
 import java.util.Properties;
 
 public class BoundaryValuesTests {
-    Properties properties = new Properties();
+    String apiKey;
 
     @BeforeEach
     public void setup(){
-        try {
-            properties.load(new FileReader("src/test/resources/apikey.properties"));
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+        apiKey = WeatherAPI.getAPIKey();
     }
 
     @Test
@@ -88,7 +86,12 @@ public class BoundaryValuesTests {
     @ValueSource(strings = {"London"})
     public void windPresent(String location) throws FailedHttpConnectionException {
         WeatherDTO weatherDTO = getWeatherDTO(location);
-        Assertions.assertTrue(stringToDouble(weatherDTO.getWind().get(Wind.SPEED.toString())) != Double.parseDouble(null));
+        Assumptions.assumeTrue(weatherDTO.getWind().containsKey(Wind.GUST.toString()));
+
+        Double left = stringToDouble(weatherDTO.getWind().get(Wind.SPEED.toString()));
+        Double right = Double.parseDouble(null);
+
+        Assertions.assertTrue(left != right);
         Assertions.assertTrue(stringToDouble(weatherDTO.getWind().get(Wind.DEGREES.toString())) != Double.parseDouble(null));
         Assertions.assertTrue(stringToDouble(weatherDTO.getWind().get(Wind.GUST.toString())) != Double.parseDouble(null));
     }
@@ -111,6 +114,7 @@ public class BoundaryValuesTests {
     @ValueSource(strings = {"London"})
     public void gustFasterThanWind(String location) throws FailedHttpConnectionException {
         WeatherDTO weatherDTO = getWeatherDTO(location);
+        Assumptions.assumeTrue(weatherDTO.getWind().containsKey(Wind.GUST.toString()));
         Assertions.assertTrue(stringToDouble(weatherDTO.getWind().get(Wind.SPEED.toString())) < stringToDouble(weatherDTO.getWind().get(Wind.GUST.toString()).toString()));
     }
 
