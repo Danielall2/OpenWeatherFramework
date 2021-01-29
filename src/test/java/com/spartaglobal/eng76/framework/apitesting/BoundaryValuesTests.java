@@ -5,6 +5,7 @@ import com.spartaglobal.eng76.framework.dto.Enums.Main;
 import com.spartaglobal.eng76.framework.dto.Enums.Wind;
 import com.spartaglobal.eng76.framework.dto.WeatherDTO;
 import com.spartaglobal.eng76.framework.dto.WeatherListDTO;
+import com.spartaglobal.eng76.framework.exceptions.FailedHttpConnectionException;
 import com.spartaglobal.eng76.framework.injector.Injector;
 import com.spartaglobal.eng76.framework.urlbuilder.URLBuilder;
 import org.junit.jupiter.api.Assertions;
@@ -35,7 +36,11 @@ public class BoundaryValuesTests {
         String url = URLBuilder.ofCitiesInRectangle(12,32,17,37,10, properties.getProperty("apikey")).toString();
         ConnectionManager connectionManager = new ConnectionManager();
         connectionManager.connectToAPI(url);
-        WeatherListDTO weatherListDTO = Injector.injectIntoWeatherListDTO(connectionManager);
+        try {
+            WeatherListDTO weatherListDTO = Injector.injectIntoWeatherListDTO(connectionManager);
+        } catch (FailedHttpConnectionException e) {
+            e.printStackTrace();
+        }
     }
 
     @ParameterizedTest
@@ -113,7 +118,12 @@ public class BoundaryValuesTests {
         String url = URLBuilder.ofCity(location,properties.getProperty("apikey")).toString();
         ConnectionManager connectionManager = new ConnectionManager();
         connectionManager.connectToAPI(url);
-        WeatherDTO weatherDTO = Injector.injectIntoWeatherDTO(connectionManager);
+        WeatherDTO weatherDTO = null;
+        try {
+            weatherDTO = Injector.injectIntoWeatherDTO(connectionManager);
+        } catch (FailedHttpConnectionException e) {
+            e.printStackTrace();
+        }
         return weatherDTO;
     }
 
