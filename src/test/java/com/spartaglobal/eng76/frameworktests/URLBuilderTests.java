@@ -70,13 +70,12 @@ public class URLBuilderTests {
         Exception exception = Assertions.assertThrows(IllegalArgumentException.class, () -> {URLBuilder.ofCity(null, WeatherAPI.getAPIKey());});
 
         String actual = exception.getMessage();
+
         String expected = "cityName cannot be null or empty!";
 
         Assertions.assertEquals(actual, expected);
 
     }
-
-
 
     @Test
     @DisplayName("Checking first ofCity method returns correct String")
@@ -286,6 +285,7 @@ public class URLBuilderTests {
         Assertions.assertEquals(actual, expected);
     }
 
+
     @Test
     @DisplayName("Check second ofZipCode returns correct String")
     void checkOfZipCodeTwo(){
@@ -319,5 +319,6 @@ public class URLBuilderTests {
 
         Assertions.assertEquals(actual, expected);
     }
+
 
 }
