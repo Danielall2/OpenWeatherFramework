@@ -5,6 +5,7 @@ import com.spartaglobal.eng76.framework.dto.Enums.Main;
 import com.spartaglobal.eng76.framework.dto.Enums.Wind;
 import com.spartaglobal.eng76.framework.dto.WeatherDTO;
 import com.spartaglobal.eng76.framework.dto.WeatherListDTO;
+import com.spartaglobal.eng76.framework.exceptions.FailedHttpConnectionException;
 import com.spartaglobal.eng76.framework.injector.Injector;
 import com.spartaglobal.eng76.framework.urlbuilder.URLBuilder;
 import org.junit.jupiter.api.Assertions;
@@ -30,7 +31,7 @@ public class BoundaryValuesTests {
     }
 
     @Test
-    public void CheckReturnedCitiesInRectangle(){
+    public void CheckReturnedCitiesInRectangle() throws FailedHttpConnectionException {
         //todo
         String url = URLBuilder.ofCitiesInRectangle(12,32,17,37,10, properties.getProperty("apikey")).toString();
         ConnectionManager connectionManager = new ConnectionManager();
@@ -40,28 +41,28 @@ public class BoundaryValuesTests {
 
     @ParameterizedTest
     @ValueSource(strings = {"London"})
-    public void tempMaxBoundary(String location){
+    public void tempMaxBoundary(String location) throws FailedHttpConnectionException {
         WeatherDTO weatherDTO = getWeatherDTO(location);
         Assertions.assertTrue(stringToDouble(weatherDTO.getMain().get(Main.TEMPERATURE.toString())) < stringToDouble(weatherDTO.getMain().get(Main.MAX_TEMPERATURE.toString())));
     }
 
     @ParameterizedTest
     @ValueSource(strings = {"London"})
-    public void tempMinBoundary(String location){
+    public void tempMinBoundary(String location) throws FailedHttpConnectionException {
         WeatherDTO weatherDTO = getWeatherDTO(location);
         Assertions.assertTrue(stringToDouble(weatherDTO.getMain().get(Main.TEMPERATURE.toString())) > stringToDouble(weatherDTO.getMain().get(Main.MIN_TEMPERATURE.toString())));
     }
 
     @ParameterizedTest
     @ValueSource(strings = {"London"})
-    public void humidityLessThan100(String location){
+    public void humidityLessThan100(String location) throws FailedHttpConnectionException {
         WeatherDTO weatherDTO = getWeatherDTO(location);
         Assertions.assertTrue(stringToDouble(weatherDTO.getMain().get(Main.HUMIDITY.toString())) <= 100);
     }
 
     @ParameterizedTest
     @ValueSource(strings = {"London"})
-    public void humidityMoreThan0(String location){
+    public void humidityMoreThan0(String location) throws FailedHttpConnectionException {
         WeatherDTO weatherDTO = getWeatherDTO(location);
         Assertions.assertTrue(stringToDouble(weatherDTO.getMain().get(Main.HUMIDITY.toString())) >= 0);
     }
@@ -74,14 +75,14 @@ public class BoundaryValuesTests {
 
     @ParameterizedTest
     @ValueSource(strings = {"London"})
-    public void visibilityMinBoundary(String location){
+    public void visibilityMinBoundary(String location) throws FailedHttpConnectionException {
         WeatherDTO weatherDTO = getWeatherDTO(location);
         Assertions.assertTrue(stringToDouble(weatherDTO.getVisibility().toString()) > 0);
     }
 
     @ParameterizedTest
     @ValueSource(strings = {"London"})
-    public void windPresent(String location){
+    public void windPresent(String location) throws FailedHttpConnectionException {
         WeatherDTO weatherDTO = getWeatherDTO(location);
         Assertions.assertTrue(stringToDouble(weatherDTO.getWind().get(Wind.SPEED.toString())) != Double.parseDouble(null));
         Assertions.assertTrue(stringToDouble(weatherDTO.getWind().get(Wind.DEGREES.toString())) != Double.parseDouble(null));
@@ -90,26 +91,26 @@ public class BoundaryValuesTests {
 
     @ParameterizedTest
     @ValueSource(strings = {"London"})
-    public void windBearingMoreThanZero(String location){
+    public void windBearingMoreThanZero(String location) throws FailedHttpConnectionException {
         WeatherDTO weatherDTO = getWeatherDTO(location);
         Assertions.assertTrue(stringToDouble(weatherDTO.getWind().get(Wind.DEGREES.toString())) >= 0);
     }
 
     @ParameterizedTest
     @ValueSource(strings = {"London"})
-    public void windBearingLessThan360(String location){
+    public void windBearingLessThan360(String location) throws FailedHttpConnectionException {
         WeatherDTO weatherDTO = getWeatherDTO(location);
         Assertions.assertTrue(stringToDouble(weatherDTO.getWind().get(Wind.DEGREES.toString())) < 360);
     }
 
     @ParameterizedTest
     @ValueSource(strings = {"London"})
-    public void gustFasterThanWind(String location){
+    public void gustFasterThanWind(String location) throws FailedHttpConnectionException {
         WeatherDTO weatherDTO = getWeatherDTO(location);
         Assertions.assertTrue(stringToDouble(weatherDTO.getWind().get(Wind.SPEED.toString())) < stringToDouble(weatherDTO.getWind().get(Wind.GUST.toString()).toString()));
     }
 
-    private WeatherDTO getWeatherDTO(String location){
+    private WeatherDTO getWeatherDTO(String location) throws FailedHttpConnectionException {
         String url = URLBuilder.ofCity(location,properties.getProperty("apikey")).toString();
         ConnectionManager connectionManager = new ConnectionManager();
         connectionManager.connectToAPI(url);
