@@ -8,6 +8,7 @@ import java.util.regex.Pattern;
 
 /**
  * This class is creating the URLs needed to create a call on WeatherAPI.
+ *
  * @author Samurah
  * @version 1.2
  * @since 1.0
@@ -28,10 +29,11 @@ public class URLBuilder {
 
     /**
      * Internal use of constructor.
+     *
      * @param baseUrl - url containing scheme and hostname
-     * @param path - path
-     * @param query - query parameters
-     * @param apikey - the api key used to access the data
+     * @param path    - path
+     * @param query   - query parameters
+     * @param apikey  - the api key used to access the data
      */
     private URLBuilder(String baseUrl, String path, String query, String apikey) {
         this.baseUrl = baseUrl;
@@ -51,6 +53,10 @@ public class URLBuilder {
      */
     public URLBuilder addParam(String key, String value){
         Collection<Map.Entry<String, String>> params = splitParam(query);
+        if(key.contains(" ")){
+            throw new IllegalArgumentException("Invalid parameter key! Should not contain any white spaces.");
+        }
+        value = value.trim().replaceAll("\\s","%20");
         params.add(Map.entry(key, value));
         this.query = paramsNoAPIKey(params);
         return this;
@@ -72,29 +78,31 @@ public class URLBuilder {
 
     /**
      * Decodes the url and creates a new URLBuilder object having the apikey provided.
-     * @param url String
+     *
+     * @param url    String
      * @param apikey String
      * @return URLBuilder instance
      */
     private static URLBuilder decode(String url, String apikey) {
-        if(url!=null && apikey != null) {
+        if (url != null && apikey != null) {
             Pattern pattern = Pattern.compile("^(?<baseurl>(?<scheme>https?://)?(?<hostname>[\\w.-]+))(?<path>/[\\w+/.]+)?(\\?(?<query>[^#]+)(#.*)?)?$");
             Matcher matcher = pattern.matcher(url);
             if (apikey.isBlank()) {
                 throw new IllegalArgumentException("Missing API key");
             }
             if (matcher.matches()) {
-                return new URLBuilder(matcher.group("baseurl"), matcher.group("path"), matcher.group("query"), apikey);
+                return new URLBuilder(matcher.group("baseurl"), matcher.group("path"), matcher.group("query").replaceAll("\\s","%20"), apikey);
             } else {
                 throw new IllegalArgumentException("Bad URL format.");
             }
-        }else{
+        } else {
             throw new IllegalArgumentException("Null values not allowed!");
         }
     }
 
     /**
      * Generates a string that is excluding API key if contained.
+     *
      * @param params Collection of {@code Map.Entry<String, String>}
      * @return String
      */
@@ -116,6 +124,7 @@ public class URLBuilder {
 
     /**
      * Generates a Collection of parameters from {@code query} provided.
+     *
      * @param query String
      * @return {@code Collection<Map.Entry<String,String>>}
      */
@@ -135,22 +144,49 @@ public class URLBuilder {
     }
 
     public static URLBuilder ofCity(String cityName, String apikey) {
+        if (cityName == null || cityName.isBlank()) {
+            throw new IllegalArgumentException("cityName cannot be null or empty!");
+        }
         return create(BASE_URL + "weather?" + "q=" + cityName, apikey);
     }
 
     public static URLBuilder ofCity(String cityName, String stateCode, String apikey) {
+        if (cityName == null || cityName.isBlank()) {
+            throw new IllegalArgumentException("cityName cannot be null or empty!");
+        }
+        if (stateCode == null || stateCode.isBlank()) {
+            throw new IllegalArgumentException("stateCode cannot be null or empty!");
+        }
         return create(BASE_URL + "weather?" + "q=" + cityName + "," + stateCode, apikey);
     }
 
     public static URLBuilder ofCity(String cityName, String stateCode, String countryCode, String apikey) {
+        if (cityName == null || cityName.isBlank()) {
+            throw new IllegalArgumentException("cityName cannot be null or empty!");
+        }
+        if (stateCode == null || stateCode.isBlank()) {
+            throw new IllegalArgumentException("stateCode cannot be null or empty!");
+        }
+        if (countryCode == null || countryCode.isBlank()) {
+            throw new IllegalArgumentException("countryCode cannot be null or empty!");
+        }
         return create(BASE_URL + "weather?" + "q=" + cityName + "," + stateCode + "," + countryCode, apikey);
     }
 
     public static URLBuilder ofCity(int cityId, String apikey) {
+        if (cityId < 0) {
+            throw new IllegalArgumentException("cityId cannot be < 0!");
+        }
         return create(BASE_URL + "weather?" + "id=" + cityId, apikey);
     }
 
     public static URLBuilder ofCities(int[] citiesId, String apikey) {
+        if(citiesId == null){
+            throw new IllegalArgumentException("citiesId length should not be null");
+        }
+        if (citiesId.length < 1) {
+            throw new IllegalArgumentException("citiesId length should be > 0");
+        }
         StringBuilder params = new StringBuilder();
         for (int cityId : citiesId) {
             if (!params.toString().isBlank()) {
@@ -165,18 +201,57 @@ public class URLBuilder {
         return create(BASE_URL + "box/city?" + "bbox=" + lon_left + "," + lat_bottom + "," + lon_right + "," + lat_top + "," + zoom, apikey);
     }
 
-    public static URLBuilder ofCitiesInCircle(long lat, long lon, String apikey) {
+    public static URLBuilder ofCitiesInCircle(double lat, double lon, String apikey) {
         return create(BASE_URL + "find?" + "lat=" + lat + "&lon=" + lon, apikey);
     }
 
     public static URLBuilder ofZipCode(String zipCode, String apikey) {
+        if(zipCode == null || zipCode.isBlank()){
+            throw new IllegalArgumentException("zipCode should not be null or empty!");
+        }
         return create(BASE_URL + "weather?" + "zip=" + zipCode, apikey);
     }
 
     public static URLBuilder ofZipCode(String zipCode, String countryCode, String apikey) {
+        if(zipCode == null || zipCode.isBlank()){
+            throw new IllegalArgumentException("zipCode should not be null or empty!");
+        }
+        if(countryCode == null || countryCode.isBlank()){
+            throw new IllegalArgumentException("countryCode should not be null or empty!");
+        }
         return create(BASE_URL + "weather?" + "zip=" + zipCode + "," + countryCode, apikey);
     }
 
+    /**
+     * Adds a parameter in {@code query};
+     *
+     * @param key   String value
+     * @param value String value
+     * @return the same instance of URLBuilder, with the extra parameter added
+     */
+    public URLBuilder addParam(String key, String value) {
+        if(key==null || key.isBlank()){
+            throw new IllegalArgumentException("Parameter's key should not be null or empty!");
+        }
+        if(value==null || value.isBlank()){
+            throw new IllegalArgumentException("Parameter's value should not be null or empty!");
+        }
+        Collection<Map.Entry<String, String>> params = splitParam(query);
+        params.add(Map.entry(key, value));
+        this.query = paramsNoAPIKey(params);
+        return this;
+    }
+
+    /**
+     * Adds a parameter in query
+     *
+     * @param key   String
+     * @param value String
+     * @return the same instance of URLBuilder, with the extra parameter added.
+     */
+    public URLBuilder addParam(OptionalParam key, String value) {
+        return addParam(key.toString(), value);
+    }
 
     @Override
     public String toString() {
